@@ -124,7 +124,10 @@ param
     [switch]$spicetify,
 
     [Parameter(HelpMessage = 'Enable Outline VPN configuration (Presets Socks5 localhost).')]
-    [switch]$outline
+    [switch]$outline,
+
+    [Parameter(HelpMessage = 'Enable BlockTheSpot (DLL Injection). Warning: May cause black screen on new versions.')]
+    [switch]$bts
 )
 
 # Ignore errors from `Stop-Process`
