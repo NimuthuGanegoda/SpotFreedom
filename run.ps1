@@ -229,6 +229,7 @@ function Install-BlockTheSpot {
     Write-Host "Installing BlockTheSpot (Ads & Premium Features)..." -ForegroundColor Cyan
 
     # Detect Architecture
+    $is64Bit = $true
     if (Test-Path $spotifyExecutable) {
         try {
             $bytes = [System.IO.File]::ReadAllBytes($spotifyExecutable)
@@ -236,30 +237,75 @@ function Install-BlockTheSpot {
             $machine = [System.BitConverter]::ToUInt16($bytes, $peHeader + 4)
             $is64Bit = $machine -eq 0x8664
         } catch {
-            $is64Bit = $true # Default to x64 if check fails
+            Write-Warning "Architecture detection failed. Defaulting to x64."
+            $is64Bit = $true
         }
     } else {
         Write-Warning "Spotify.exe not found. Is Spotify installed?"
         return
     }
 
-    $btsZip = Join-Path ([System.IO.Path]::GetTempPath()) 'chrome_elf.zip'
-    
+    # Cache Configuration
+    $cacheDir = Join-Path $env:LOCALAPPDATA 'SpotFreedom'
+    if (-not (Test-Path $cacheDir)) {
+        New-Item -Path $cacheDir -ItemType Directory -Force | Out-Null
+    }
+
     if ($is64Bit) {
         $btsUrl = 'https://github.com/mrpond/BlockTheSpot/releases/latest/download/chrome_elf.zip'
         Write-Host "Detected x64 architecture." -ForegroundColor Green
+
+        # Resolve 'latest' redirect to get versioned URL
+        try {
+            $req = [System.Net.WebRequest]::Create($btsUrl)
+            $req.Method = "HEAD"
+            $req.AllowAutoRedirect = $false
+            $resp = $req.GetResponse()
+
+            if ($resp.StatusCode -eq [System.Net.HttpStatusCode]::Found -or
+                $resp.StatusCode -eq [System.Net.HttpStatusCode]::MovedPermanently -or
+                $resp.StatusCode -eq [System.Net.HttpStatusCode]::Redirect) {
+                $btsUrl = $resp.Headers["Location"]
+            }
+            $resp.Close()
+        } catch {
+            Write-Warning "Could not resolve BlockTheSpot version. Cache may be ineffective."
+        }
     } else {
         $btsUrl = 'https://github.com/mrpond/BlockTheSpot/releases/download/2023.5.20.80/chrome_elf.zip'
         Write-Warning "Detected x86 architecture. Using legacy BlockTheSpot."
     }
 
+    # Determine Cache Filename
+    $cacheFileName = 'chrome_elf.zip'
+    if ($btsUrl -match 'releases/download/([^/]+)/chrome_elf.zip') {
+        $version = $matches[1]
+        $cacheFileName = "chrome_elf_$version.zip"
+    } elseif ($is64Bit) {
+         $cacheFileName = "chrome_elf_latest_x64.zip"
+    } else {
+         $cacheFileName = "chrome_elf_legacy_x86.zip"
+    }
+
+    $btsZip = Join-Path $cacheDir $cacheFileName
+
     try {
-        Invoke-WebRequest -Uri $btsUrl -OutFile $btsZip -UseBasicParsing
+        if (-not (Test-Path $btsZip)) {
+            Write-Host "Downloading BlockTheSpot..." -ForegroundColor Cyan
+            Invoke-WebRequest -Uri $btsUrl -OutFile $btsZip -UseBasicParsing
+        } else {
+            Write-Host "Using cached BlockTheSpot: $cacheFileName" -ForegroundColor Green
+        }
         
         if (Test-Path $btsZip) {
-            Expand-Archive -Force -LiteralPath $btsZip -DestinationPath $spotifyDirectory
-            Write-Host "BlockTheSpot installed successfully." -ForegroundColor Green
-            Remove-Item $btsZip -Force -ErrorAction SilentlyContinue
+            try {
+                Expand-Archive -Force -LiteralPath $btsZip -DestinationPath $spotifyDirectory -ErrorAction Stop
+                Write-Host "BlockTheSpot installed successfully." -ForegroundColor Green
+            } catch {
+                Write-Warning "Failed to extract BlockTheSpot. Deleting corrupt cache file..."
+                Remove-Item $btsZip -Force -ErrorAction SilentlyContinue
+                throw $_
+            }
         } else {
             Write-Error "Failed to download BlockTheSpot."
         }
@@ -489,26 +535,33 @@ function Patch-XPUI {
         $patch = $patchesJson.others.$name
         if (Is-Ver-Compatible $clientVerForCheck $patch.version.fr $patch.version.to) {
 
-            # Special handling for patches that add CSS
-            if ($patch.add) {
+            # Special handling for patches that add CSS (and only add CSS)
+            if ($patch.add -and -not $patch.match) {
                 # Append to CSS
                 $cssContent += "`n" + $patch.add
             } elseif ($patch.match) {
-                 # JS/HTML replacements
-                 # NOTE: Some patches in 'others' target CSS or HTML (e.g. htmlmin).
-                 # We assume JS by default unless it looks like CSS?
-                 # Actually spotx.sh applies different patches to different files.
-                 # patches.json doesn't specify file clearly in 'others'.
-                 # However, 'discriptions' -> 'createElement' implies JS.
-                 # 'block_subfeeds' -> 'add' implies CSS.
-
-                 # We try to apply to JS first.
+                 $match = $patch.match
                  $replace = $patch.replace
-                 if ($patch.svggit) { $replace = $replace.Replace("{0}", $patch.svggit) }
-                 if ($patch.svgtg) { $replace = $replace.Replace("{1}", $patch.svgtg) }
-                 if ($patch.svgfaq) { $replace = $replace.Replace("{2}", $patch.svgfaq) }
 
-                 try { $jsContent = $jsContent -replace $patch.match, $replace } catch {}
+                 # Handle placeholders {0}, {1} in replace string if 'add' property exists
+                 if ($patch.add) {
+                    try {
+                        $replace = $replace -replace "\{0\}", $patch.add
+                        if ($patch.add2) {
+                            $replace = $replace -replace "\{1\}", $patch.add2
+                        }
+                    } catch {}
+                 }
+
+                 if ($match -is [array]) {
+                     for ($i=0; $i -lt $match.Count; $i++) {
+                        $m = $match[$i]
+                        $r = if ($replace -is [array]) { $replace[$i] } else { $replace }
+                        try { $jsContent = $jsContent -replace $m, $r } catch {}
+                     }
+                 } else {
+                    try { $jsContent = $jsContent -replace $match, $replace } catch {}
+                 }
             }
         }
     }
