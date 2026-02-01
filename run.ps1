@@ -488,19 +488,14 @@ function Patch-XPUI {
                  # 'block_subfeeds' -> 'add' implies CSS.
 
                  # We try to apply to JS first.
-                 try { $jsContent = $jsContent -replace $patch.match, $patch.replace } catch {}
+                 $replace = $patch.replace
+                 if ($patch.svggit) { $replace = $replace.Replace("{0}", $patch.svggit) }
+                 if ($patch.svgtg) { $replace = $replace.Replace("{1}", $patch.svgtg) }
+                 if ($patch.svgfaq) { $replace = $replace.Replace("{2}", $patch.svgfaq) }
+
+                 try { $jsContent = $jsContent -replace $patch.match, $replace } catch {}
             }
         }
-    }
-
-    # Special case: discriptions patch uses {0}, {1} placeholders
-    # We replaced it generically above, but the placeholders {0} remain.
-    # We should fix it.
-    if ($jsContent -match "\{0\} Github") {
-        $discriptions = $patchesJson.others.discriptions
-        $jsContent = $jsContent -replace "\{0\}", $discriptions.svggit
-        $jsContent = $jsContent -replace "\{1\}", $discriptions.svgtg
-        $jsContent = $jsContent -replace "\{2\}", $discriptions.svgfaq
     }
 
     # Save Modified Files
