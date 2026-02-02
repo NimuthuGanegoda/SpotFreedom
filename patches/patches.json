@@ -55,22 +55,6 @@
             },
             "match": "(\\(.,..jsxs\\)\\(.{1,3}|(.\\(\\).|..)createElement\\(.{1,4}),{(filterMatchQuery|filter:.,title|(variant:\"viola\",semanticColor:\"textSubdued\"|..:\"span\",variant:.{3,6}mesto,color:.{3,6}),htmlFor:\"desktop.settings.downloadQuality.+?).{1,6}get\\(\"desktop.settings.downloadQuality.title.+?(children:.{1,2}\\(.,.\\).+?,|\\(.,.\\){3,4},|,.\\)}},.\\(.,.\\)\\),)",
             "replace": ""
-        },
-        "hideUpgradeButton2": {
-            "version": {
-                "fr": "1.2.55",
-                "to": ""
-            },
-            "match": "\"free\"===",
-            "replace": "\"premium\"==="
-        },
-        "adsX2": {
-            "version": {
-                "fr": "1.2.55",
-                "to": ""
-            },
-            "match": "(?<=}/a)d(?=s)",
-            "replace": "b"
         }
     },
     "podcasts": {
@@ -89,566 +73,6 @@
             },
             "match": "(case 6:|const .=await .\\([^\\)]*\\);)((return .\\.abrupt\\(\\\"|return[ \\\"],?)(null!=n&&|return\\\",)?(.)(\\);case 9|\\??.errors\\?.*?Promise.reject.+?errors\\)+:.))",
             "replace": "$1$5?.data?.home?.sectionContainer?.sections?.items?.forEach(x => x?.sectionItems?.items && (x.sectionItems.items = x.sectionItems.items.filter(i => !['Podcast','Audiobook','Episode'].includes(i?.content?.data?.__typename))));$2"
-        }
-    },
-    "others": {
-        "discriptions": {
-            "version": {
-                "fr": "1.1.59",
-                "to": ""
-            },
-            "match": "((..createElement|children:\\(.{1,7}\\))\\(.{1,7},{source:).{1,7}get\\(\"about.copyright\",.\\),paragraphClassName:(?:\"[\\w]+\"|\\w+)}\\)",
-            "replace": "<h3>More about SpotX</h3><br><details><summary>{0} Github</summary><a href='https://github.com/SpotX-Official/SpotX'>SpotX-Windows</a><br><a href='https://github.com/SpotX-Official/SpotX-Bash'>SpotX-Mac/Linux</a><br><br/></details><details><summary>{1} Telegram</summary><a href='https://t.me/SpotxCommunity'>SpotX Community</a><br><a href='https://t.me/spotify_windows_mod'>SpotX Channel</a><br><br/></details><details><summary>{2} FAQ</summary><a href='https://te.legra.ph/SpotX-FAQ-09-19'>Windows</a><br><a href='https://github.com/jetfir3/SpotX-Bash/wiki/SpotX%E2%80%90Bash-FAQ'>Mac/Linux</a></details><br><h4>DISCLAIMER</h4>SpotX is a modified version of the official Spotify client, provided as an evaluation version, you use it at your own risk.",
-            "svgtg": "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path id='telegram-1' d='M18.384,22.779c0.322,0.228 0.737,0.285 1.107,0.145c0.37,-0.141 0.642,-0.457 0.724,-0.84c0.869,-4.084 2.977,-14.421 3.768,-18.136c0.06,-0.28 -0.04,-0.571 -0.26,-0.758c-0.22,-0.187 -0.525,-0.241 -0.797,-0.14c-4.193,1.552 -17.106,6.397 -22.384,8.35c-0.335,0.124 -0.553,0.446 -0.542,0.799c0.012,0.354 0.25,0.661 0.593,0.764c2.367,0.708 5.474,1.693 5.474,1.693c0,0 1.452,4.385 2.209,6.615c0.095,0.28 0.314,0.5 0.603,0.576c0.288,0.075 0.596,-0.004 0.811,-0.207c1.216,-1.148 3.096,-2.923 3.096,-2.923c0,0 3.572,2.619 5.598,4.062Zm-11.01,-8.677l1.679,5.538l0.373,-3.507c0,0 6.487,-5.851 10.185,-9.186c0.108,-0.098 0.123,-0.262 0.033,-0.377c-0.089,-0.115 -0.253,-0.142 -0.376,-0.064c-4.286,2.737 -11.894,7.596 -11.894,7.596Z' fill='#fff'/></svg>",
-            "svggit": "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path d='M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z' fill='#fff'/></svg>",
-            "svgfaq": "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path d='M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1.25 17c0 .69-.559 1.25-1.25 1.25-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25c.691 0 1.25.56 1.25 1.25zm1.393-9.998c-.608-.616-1.515-.955-2.551-.955-2.18 0-3.59 1.55-3.59 3.95h2.011c0-1.486.829-2.013 1.538-2.013.634 0 1.307.421 1.364 1.226.062.847-.39 1.277-.962 1.821-1.412 1.343-1.438 1.993-1.432 3.468h2.005c-.013-.664.03-1.203.935-2.178.677-.73 1.519-1.638 1.536-3.022.011-.924-.284-1.719-.854-2.297z' fill='#fff'/></svg>"
-        },
-        "ForcedExp": {
-            "version": {
-                "fr": "1.1.67",
-                "to": ""
-            },
-            "match": "((?:{configuration|{resolver|instance):(.).(?:getRemoteConfig|getUrlDispenserServiceClient).+?;)",
-            "replace": "$1const experiments={enable:[],disable:[],custom:[]},setExpValue=(v,e,val)=>v&&(v.set?v.set(e,val):v[e]&&(v[e].value=val)),config=$2.getRemoteConfigResolver?.()||$2.getRemoteConfiguration?.();config&&((values=>{for(const type in experiments)experiments[type].forEach(exp=>setExpValue(values,type==='custom'?exp.name:exp,type==='custom'?exp.value:type==='enable'));(window.Spotx??={}).RemoteExp=values})(config.values||config.activeProperties));"
-        },
-        "themelyrics": {
-            "theme": {
-                "default": {
-                    "pasttext": "#575757",
-                    "current": "#C8C8C8",
-                    "next": "#575757",
-                    "hover": "#C8C8C8",
-                    "background": "#121212",
-                    "maxmatch": "#969696"
-                },
-                "red": {
-                    "pasttext": "#575757",
-                    "current": "#FF3737",
-                    "next": "#575757",
-                    "hover": "#C8C8C8",
-                    "background": "#121212",
-                    "maxmatch": "#969696"
-                },
-                "orange": {
-                    "pasttext": "#575757",
-                    "current": "#F68D00",
-                    "next": "#575757",
-                    "hover": "#C8C8C8",
-                    "background": "#121212",
-                    "maxmatch": "#969696"
-                },
-                "yellow": {
-                    "pasttext": "#575757",
-                    "current": "#ECE224",
-                    "next": "#575757",
-                    "hover": "#C8C8C8",
-                    "background": "#121212",
-                    "maxmatch": "#969696"
-                },
-                "spotify": {
-                    "pasttext": "#575757",
-                    "current": "#1ED760",
-                    "next": "#575757",
-                    "hover": "#C8C8C8",
-                    "background": "#121212",
-                    "maxmatch": "#969696"
-                },
-                "spotify#2": {
-                    "pasttext": "#9b9b9b",
-                    "current": "#1ed760",
-                    "next": "#666666",
-                    "hover": "#f2f2f2",
-                    "background": "#242424",
-                    "maxmatch": "#C2C2C2"
-                },
-                "blue": {
-                    "pasttext": "#575757",
-                    "current": "#00DFEA",
-                    "next": "#575757",
-                    "hover": "#C8C8C8",
-                    "background": "#121212",
-                    "maxmatch": "#969696"
-                },
-                "purple": {
-                    "pasttext": "#575757",
-                    "current": "#9E6BE3",
-                    "next": "#575757",
-                    "hover": "#C8C8C8",
-                    "background": "#121212",
-                    "maxmatch": "#969696"
-                },
-                "strawberry": {
-                    "pasttext": "#F17F7F",
-                    "current": "#E43A47",
-                    "next": "#595959",
-                    "hover": "#F2F2F2",
-                    "background": "#1C1C1E",
-                    "maxmatch": "#595959"
-                },
-                "pumpkin": {
-                    "pasttext": "#FDAC69",
-                    "current": "#E88500",
-                    "next": "#595959",
-                    "hover": "#F2F2F2",
-                    "background": "#1C1C1E",
-                    "maxmatch": "#595959"
-                },
-                "sandbar": {
-                    "pasttext": "#FFDB7A",
-                    "current": "#F5BA18",
-                    "next": "#595959",
-                    "hover": "#F2F2F2",
-                    "background": "#1C1C1E",
-                    "maxmatch": "#595959"
-                },
-                "radium": {
-                    "pasttext": "#AAFFA3",
-                    "current": "#17D344",
-                    "next": "#595959",
-                    "hover": "#F2F2F2",
-                    "background": "#1C1C1E",
-                    "maxmatch": "#595959"
-                },
-                "oceano": {
-                    "pasttext": "#70DBF0",
-                    "current": "#13A1BD",
-                    "next": "#595959",
-                    "hover": "#F2F2F2",
-                    "background": "#1C1C1E",
-                    "maxmatch": "#595959"
-                },
-                "royal": {
-                    "pasttext": "#B8A3EB",
-                    "current": "#8461DD",
-                    "next": "#595959",
-                    "hover": "#F2F2F2",
-                    "background": "#1C1C1E",
-                    "maxmatch": "#595959"
-                },
-                "github": {
-                    "pasttext": "#AD82F8",
-                    "current": "#7EE787",
-                    "next": "#47566D",
-                    "hover": "#70B3FF",
-                    "background": "#161B22",
-                    "maxmatch": "#408BD0"
-                },
-                "discord": {
-                    "pasttext": "#616774",
-                    "current": "#7A8FDC",
-                    "next": "#616774",
-                    "hover": "#FFFFFF",
-                    "background": "#23272A",
-                    "maxmatch": "#616774"
-                },
-                "drot": {
-                    "pasttext": "#505050",
-                    "current": "#F37171",
-                    "next": "#505050",
-                    "hover": "#A13131",
-                    "background": "#191414",
-                    "maxmatch": "#787878"
-                },
-                "forest": {
-                    "pasttext": "#505050",
-                    "current": "#AEF97B",
-                    "next": "#505050",
-                    "hover": "#418022",
-                    "background": "#141914",
-                    "maxmatch": "#787878"
-                },
-                "fresh": {
-                    "pasttext": "#505050",
-                    "current": "#50DCF0",
-                    "next": "#505050",
-                    "hover": "#0B7383",
-                    "background": "#14191E",
-                    "maxmatch": "#787878"
-                },
-                "zing": {
-                    "pasttext": "#4E596F",
-                    "current": "#F67064",
-                    "next": "#4E596F",
-                    "hover": "#FFFFFF",
-                    "background": "#202430",
-                    "maxmatch": "#9EA8BC"
-                },
-                "pinkle": {
-                    "pasttext": "#9579E3",
-                    "current": "#CD3B99",
-                    "next": "#5E547C",
-                    "hover": "#FFFFFF",
-                    "background": "#1C1925",
-                    "maxmatch": "#5E547C"
-                },
-                "krux": {
-                    "pasttext": "#5C89D2",
-                    "current": "#01C38D",
-                    "next": "#696E79",
-                    "hover": "#FFFFFF",
-                    "background": "#191E29",
-                    "maxmatch": "#696E79"
-                },
-                "blueberry": {
-                    "pasttext": "#1CAAC6",
-                    "current": "#90E0F0",
-                    "next": "#516377",
-                    "hover": "#A0D1FA",
-                    "background": "#232937",
-                    "maxmatch": "#516377"
-                },
-                "postlight": {
-                    "pasttext": "#C9A8FE",
-                    "current": "#9D65C7",
-                    "next": "#534D6F",
-                    "hover": "#D1D1D1",
-                    "background": "#13101C",
-                    "maxmatch": "#534D6F"
-                },
-                "relish": {
-                    "pasttext": "#9D2117",
-                    "current": "#C8C8C8",
-                    "next": "#C8A032",
-                    "hover": "#E5CB8B",
-                    "background": "#121212",
-                    "maxmatch": "#787878"
-                },
-                "turquoise": {
-                    "pasttext": "#00656aa0",
-                    "current": "#01dfea",
-                    "next": "#575757",
-                    "hover": "#a97aff",
-                    "background": "#121212",
-                    "maxmatch": "#00656a"
-                },
-                "lavender": {
-                    "pasttext": "#B8A2EA",
-                    "current": "#8462DD",
-                    "next": "#575757",
-                    "hover": "#F2F2F2",
-                    "background": "#121212",
-                    "maxmatch": "#C2C2C2"
-                }
-            }
-        },
-        "collaboration": {
-            "version": {
-                "fr": "1.1.74",
-                "to": ""
-            },
-            "match": "[\\w$]+\\??\\.canAdministratePermissions(\\W.*?\"permissions\\.invite-collaborators\")",
-            "replace": "false$1"
-        },
-        "byspotx": {
-            "add": "// Patched by SpotX"
-        },
-        "disablesentry": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": [
-                "@\\w+/gabo[^\"]+"
-            ],
-            "replace": [
-                ""
-            ]
-        },
-        "cssmin": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": [
-                "[/]\\*([^*]|[\r\n]|(\\*([^/]|[\r\n])))*\\*[/]",
-                "[/][/]#\\s.*",
-                "\r?\n(?!\\(1|\\d)"
-            ],
-            "replace": [
-                "",
-                "",
-                ""
-            ]
-        },
-        "htmlmin": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": [
-                "<li><a href=\"#[A-Za-z0-9]{5}\">zlib</a></li>\n(.|\n)*</p><!-- END CONTAINER DEPS LICENSES -->(</div>)",
-                "\t",
-                "  ",
-                "(?m)(^\\s*\r?\n)",
-                "\r?\n(?!\\(1|\\d)"
-            ],
-            "replace": [
-                "$2",
-                "",
-                "",
-                "",
-                ""
-            ]
-        },
-        "blankmin": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": [
-                "  ",
-                "(?m)(^\\s*\r?\n)",
-                "\r?\n(?!\\(1|\\d)"
-            ],
-            "replace": [
-                "",
-                "",
-                ""
-            ]
-        },
-        "minjs": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": [
-                "[/][/][#] sourceMappingURL=.*[.]map",
-                "\r?\n(?!\\(1|\\d)"
-            ],
-            "replace": [
-                "",
-                ""
-            ]
-        },
-        "minjson": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": [
-                "  ",
-                "    ",
-                "\": ",
-                "\r?\n(?!\\(1|\\d)"
-            ],
-            "replace": [
-                "",
-                "",
-                "\":",
-                ""
-            ]
-        },
-        "block_subfeeds": {
-            "version": {
-                "fr": "1.2.36",
-                "to": ""
-            },
-            "add": " .LVMjmN2CaPruPAo62RAY, .Wn4fEKCJ6jYPfG2Y0ABn, .Y3Kd8WKnE3ZW9lzgA8nN, .C_T1Uoz7Fws_AFDl { display: none !important }"
-        },
-        "downloadquality": {
-            "version": {
-                "fr": "1.2.30",
-                "to": ""
-            },
-            "add": " :is(.weV_qxFz4gF5sPotO10y, .BMtRRwqaJD_95vJFMFD0, .eguwzH_QWTBXry7hiNj3, .qV_CxbowaNkMarye, .qV_CxbowaNkMarye):has([for=\"desktop.settings.downloadQuality\"]) {display: none}"
-        },
-        "downloadicon": {
-            "version": {
-                "fr": "1.1.74",
-                "to": ""
-            },
-            "add": " .BKsbV2Xl786X9a09XROH, .GWCBhKJqeZal3n5tCQwl, .pX3IkLhEry0wVfiU {display:none}"
-        },
-        "submenudownload": {
-            "version": {
-                "fr": "1.1.74",
-                "to": ""
-            },
-            "add": " .pzkhLqffqF_4hucrVVQA, .egE6UQjF_UUoCzvMxREj, .Y98_oiegQgSpY_o7hoKG, .tT_JypfxNakuY1jHgyBN, .zVA1h9TUy8QQBogj {display:none}"
-        },
-        "veryhighstream": {
-            "version": {
-                "fr": "1.1.74",
-                "to": "1.2.29"
-            },
-            "add": " #desktop\\.settings\\.streamingQuality>option:nth-child(5) {display:none}"
-        },
-        "fix-scrollbar": {
-            "version": {
-                "fr": "1.1.59",
-                "to": ""
-            },
-            "add": " .main-view-container__scroll-node > .os-scrollbar-vertical {top:0px !important}"
-        },
-        "fix-old-theme": {
-            "version": {
-                "fr": "1.1.74",
-                "to": "1.2.13"
-            },
-            "match": "((LKgm9fCDTO7wqig_5U1q|eFQFeXVbY8rrcTagg0oH){--left-sidebar-item-height.+?margin-top)(:\\d+px)",
-            "replace": "$1:0px"
-        },
-        "searchFixes": {
-            "version": {
-                "fr": "1.1.85",
-                "to": "1.2.57"
-            },
-            "match": "(typeName\\])",
-            "replace": "$1 || []"
-        },
-        "product_state": {
-            "version": {
-                "fr": "1.1.93",
-                "to": ""
-            },
-            "match": "(this\\.(?:productStateApi|_product_state)(?:|_service)=(.))(?=}|(?:,this\\.cache=.)?,this\\.productStateApi|,this\\._events)",
-            "replace": "$1,$2?.putOverridesValues?.({0})",
-            "add": "ads:'0',catalogue:'premium',product:'premium',type:'premium',name:'Spotify','unrestricted':'1'",
-            "add2": "'storage-size-config':'{0},90,500,3'"
-        },
-        "dev-tools": {
-            "version": {
-                "fr": "1.1.98",
-                "to": "1.2.37"
-            },
-            "match": [
-                "(onSelected:).{3,14}({..\"app.enable.developer.mode.,).\\)(,.\\(!0\\))?}",
-                "{(.{5,20}?|)(this\\.(?:productStateApi|_product_state)(?:|_service)=(.))(?=}|,this\\.productStateApi|,this\\._events|,.\\?\\.putOverridesValues)",
-                "(..\\(.\\)|.)(\\?(..createElement|\\(.{1,7}jsxs\\))\\(.{1,3},{filterMatchQuery:.{2,15}\\(\"settings.employee\"\\))"
-            ],
-            "replace": [
-                "$1(check)=>$2check);localStorage.setItem('dev-tools',check);Spotx.ProductState.putOverridesValues({pairs:{'com.spotify.madprops.use.ucs.product.state':check?'1':'0','employee':check?'1':'0'}});setTimeout(()=>{window.sendCosmosRequest({ request:JSON.stringify({method:'POST',uri:'sp://desktop/v1/restart'})})},700);}",
-                "{window.Spotx={ProductState:$3};if(localStorage.getItem('dev-tools')==='true'){$3.putOverridesValues({pairs:{'com.spotify.madprops.use.ucs.product.state':'1','employee':'1'}})};$1$2",
-                "true$2"
-            ]
-        },
-        "banner_home": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": "(ADS_PREMIUM,isPremium:).(.{20,60}?isHptoHidden:).",
-            "replace": "$1true$2true"
-        },
-        "sentry": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": "(864e5)<30",
-            "replace": "$1<0"
-        },
-        "disablelog": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": "sp://logging/v3/\\w+",
-            "replace": ""
-        },
-        "hidemerchsidebar": {
-            "version": {
-                "fr": "1.2.0",
-                "to": "1.2.44"
-            },
-            "match": "((return|merch:.}\\)\\=\\>)( .&&\\(\\!.\\|\\|..length\\<1\\)&&..length\\>0&&\\(.=.\\),)?\\!.\\|\\|..length\\<1)",
-            "replace": "$2 true "
-        },
-        "offrujs": {
-            "version": {
-                "fr": "1.1.92",
-                "to": ""
-            },
-            "match": "\\[(.\\..{1,2}\\.)en,.\\..{1,2}\\.a(.+?\\])",
-            "replace": "[$1en,$1ru]"
-        },
-        "goofyhistory": {
-            "version": {
-                "fr": "1.1.70",
-                "to": ""
-            },
-            "match": "({data:.}\\)=>{|.\\.data;)((?:this|.)\\._state=(.))",
-            "replace": "$1goofyHistory($3, {0}, {1});$2"
-        },
-        "similarplaylist": {
-            "version": {
-                "fr": "1.1.85",
-                "to": "1.2.24"
-            },
-            "match": "(Fragment,(?:null,|{children:\\[))(?:[^}]{1,100}?)contextmenu\\.create-similar-playlist\"\\)}\\),",
-            "replace": "$1"
-        },
-        "sidebar_fix": {
-            "version": {
-                "fr": "1.1.99",
-                "to": "1.2.6"
-            },
-            "match": "min:320,max:420",
-            "replace": "min:250,max:400"
-        },
-        "filtertags_locale_fix": {
-            "version": {
-                "fr": "1.2.29",
-                "to": ""
-            },
-            "match": "(withPath\\(\"/liked-songs\"\\))",
-            "replace": "$1.withLocale(\"en\")"
-        },
-        "lyrics-old-on": {
-            "version": {
-                "fr": "1.1.70",
-                "to": "1.2.35"
-            },
-            "match": "((?:\\(?await )?.\\.build.{20,60}encodeURIComponent.{20,140}\"/track/{trackId}.+?)(.send)",
-            "replace": "$1.withHeaders([{key:'spotify-app-version',value:'1.2.43'}])$2"
-        },
-        "lyrics-block": {
-            "version": {
-                "fr": "1.1.70",
-                "to": "1.2.40"
-            },
-            "match": "(?:\\(?await )?.\\.build.{20,60}encodeURIComponent.{20,140}\"\\/track\\/{trackId}.+?send\\(\\)(?:\\)\\.body)?",
-            "replace": "{}"
-        },
-        "fixTitlebarHeight": {
-            "version": {
-                "fr": "1.2.45",
-                "to": "1.2.45"
-            },
-            "match": "(\"update_titlebar\",height:).",
-            "replace": "$1'40'"
-        },
-        "mock": {
-            "version": {
-                "fr": "1.2.55",
-                "to": ""
-            },
-            "match": "/(?:leavebehinds/mock|leavebehinds|mock|sponsoredplaylist)/",
-            "replace": "/localhost/"
-        },
-        "upgradeButton": {
-            "version": {
-                "fr": "1.2.55",
-                "to": ""
-            },
-            "match": "\"\\(min-width: 1024px\\)\"",
-            "replace": "\"(min-width: 9999990px)\""
-        },
-        "upgradeMenu": {
-            "version": {
-                "fr": "1.2.55",
-                "to": ""
-            },
-            "match": "=>\\{((?:(?!=>\\{).)*?(?=\"loggedin_upgrade_menu))",
-            "replace": "=>{ return null; $1"
-        },
-        "hideEmptyYourEpisodes": {
-            "version": {
-                "fr": "1.2.78",
-                "to": ""
-            },
-            "match": "(includeYourEpisodes\\?\\{inclusionMode:[^,}]+\\.)INCLUDE_ALWAYS",
-            "replace": "$1INCLUDE_IF_NOT_EMPTY"
         }
     },
     "EnableExp": {
@@ -1450,7 +874,7 @@
             "native_description": "Enable new overlay scrollbars",
             "version": {
                 "fr": "1.2.58",
-                "to": ""
+                "to": "1.2.81"
             }
         },
         "FullscreenLibrary": {
@@ -1594,7 +1018,7 @@
             "native_description": "Enable users to react and reply to comments.",
             "version": {
                 "fr": "1.2.74",
-                "to": ""
+                "to": "1.2.81"
             }
         },
         "ExcludeTrackFromTasteProfile": {
@@ -1668,6 +1092,14 @@
                 "to": ""
             }
         },
+        "ForceVolumeInExclusiveMode": {
+            "name": "enableForceVolumeInExclusiveMode",
+            "native_description": "Enables the force volume toggle when exclusive mode is enabled",
+            "version": {
+                "fr": "1.2.82",
+                "to": ""
+            }
+        },
         "ListPrivateByDefaultSetting": {
             "name": "enableListPrivateByDefaultSetting",
             "native_description": "Enable List Private By Default setting in Desktop Social Settings",
@@ -1709,6 +1141,14 @@
             "name": "enableMagpie",
             "version": {
                 "fr": "1.2.77",
+                "to": ""
+            }
+        },
+        "PlaylistExtenderBpmKey": {
+            "name": "enablePlaylistExtenderBpmKey",
+            "native_description": "Enable BPM and key columns in playlist recommendations",
+            "version": {
+                "fr": "1.2.82",
                 "to": ""
             }
         }
@@ -2499,7 +1939,7 @@
             "value": "your_library",
             "version": {
                 "fr": "1.2.57",
-                "to": ""
+                "to": "1.2.81"
             }
         },
         "AdsDismissTimeInterval": {
@@ -2581,6 +2021,622 @@
                 "fr": "1.2.73",
                 "to": ""
             }
+        }
+    },
+    "binary": {
+        "block_update": {
+            "version": {
+                "fr": "1.1.59",
+                "to": ""
+            },
+            "add": "(?<=desktop-update/.)7(/update)",
+            "match": "(?<=desktop-update/.)2(/update)",
+            "replace": "7/update"
+        },
+        "block_slots": {
+            "version": {
+                "fr": "1.1.59",
+                "to": ""
+            },
+            "add": "slot}(?=.{3,8}(override_url|queued_ads))",
+            "match": "slots(?=.{3,8}(override_url|queued_ads))",
+            "replace": "slot}"
+        },
+        "block_slots_2": {
+            "version": {
+                "fr": "1.2.55",
+                "to": ""
+            },
+            "add": "slot}(?=.{25,35}state)",
+            "match": "slots(?=.{25,35}state)",
+            "replace": "slot}"
+        },
+        "block_slots_3": {
+            "version": {
+                "fr": "1.2.55",
+                "to": ""
+            },
+            "add": "}(?=payload=)",
+            "match": "\\?(?=payload=)",
+            "replace": "}"
+        },
+        "block_gabo": {
+            "version": {
+                "fr": "1.1.59",
+                "to": "1.2.73"
+            },
+            "add": "dodo(?=.receiver-service)",
+            "match": "gabo(?=.receiver-service)",
+            "replace": "dodo"
+        },
+        "block_gabo2": {
+            "version": {
+                "fr": "1.2.74",
+                "to": ""
+            },
+            "add": "dodo(?=.receiver-service(?:/public|[^/]))",
+            "match": "gabo(?=.receiver-service(?:/public|[^/]))",
+            "replace": "dodo"
+        }
+    },
+    "others": {
+        "product_state": {
+            "version": {
+                "fr": "1.1.93",
+                "to": ""
+            },
+            "match": "(this\\.(?:productStateApi|_product_state)(?:|_service)=(.))(?=}|(?:,this\\.cache=.)?,this\\.productStateApi|,this\\._events)",
+            "replace": "$1,$2?.putOverridesValues?.({0})",
+            "add": "ads:'0',catalogue:'premium',product:'premium',type:'premium',name:'Spotify','unrestricted':'1'",
+            "add2": "'storage-size-config':'{0},90,500,3'"
+        },
+        "dev-tools": {
+            "version": {
+                "fr": "1.1.98",
+                "to": "1.2.37"
+            },
+            "match": [
+                "(onSelected:).{3,14}({..\"app.enable.developer.mode.,).\\)(,.\\(!0\\))?}",
+                "{(.{5,20}?|)(this\\.(?:productStateApi|_product_state)(?:|_service)=(.))(?=}|,this\\.productStateApi|,this\\._events|,.\\?\\.putOverridesValues)",
+                "(..\\(.\\)|.)(\\?(..createElement|\\(.{1,7}jsxs\\))\\(.{1,3},{filterMatchQuery:.{2,15}\\(\"settings.employee\"\\))"
+            ],
+            "replace": [
+                "$1(check)=>$2check);localStorage.setItem('dev-tools',check);Spotx.ProductState.putOverridesValues({pairs:{'com.spotify.madprops.use.ucs.product.state':check?'1':'0','employee':check?'1':'0'}});setTimeout(()=>{window.sendCosmosRequest({ request:JSON.stringify({method:'POST',uri:'sp://desktop/v1/restart'})})},700);}",
+                "{window.Spotx={ProductState:$3};if(localStorage.getItem('dev-tools')==='true'){$3.putOverridesValues({pairs:{'com.spotify.madprops.use.ucs.product.state':'1','employee':'1'}})};$1$2",
+                "true$2"
+            ]
+        },
+        "banner_home": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": "(ADS_PREMIUM,isPremium:).(.{20,60}?isHptoHidden:).",
+            "replace": "$1true$2true"
+        },
+        "sentry": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": "(864e5)<30",
+            "replace": "$1<0"
+        },
+        "disablelog": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": "sp://logging/v3/\\w+",
+            "replace": ""
+        },
+        "hidemerchsidebar": {
+            "version": {
+                "fr": "1.2.0",
+                "to": "1.2.44"
+            },
+            "match": "((return|merch:.}\\)\\=\\>)( .&&\\(\\!.\\|\\|..length\\<1\\)&&..length\\>0&&\\(.=.\\),)?\\!.\\|\\|..length\\<1)",
+            "replace": "$2 true "
+        },
+        "offrujs": {
+            "version": {
+                "fr": "1.1.92",
+                "to": ""
+            },
+            "match": "\\[(.\\..{1,2}\\.)en,.\\..{1,2}\\.a(.+?\\])",
+            "replace": "[$1en,$1ru]"
+        },
+        "goofyhistory": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": "({data:.}\\)=>{|.\\.data;)((?:this|.)\\._state=(.))",
+            "replace": "$1goofyHistory($3, {0}, {1});$2"
+        },
+        "similarplaylist": {
+            "version": {
+                "fr": "1.1.85",
+                "to": "1.2.24"
+            },
+            "match": "(Fragment,(?:null,|{children:\\[))(?:[^}]{1,100}?)contextmenu\\.create-similar-playlist\"\\)}\\),",
+            "replace": "$1"
+        },
+        "sidebar_fix": {
+            "version": {
+                "fr": "1.1.99",
+                "to": "1.2.6"
+            },
+            "match": "min:320,max:420",
+            "replace": "min:250,max:400"
+        },
+        "filtertags_locale_fix": {
+            "version": {
+                "fr": "1.2.29",
+                "to": ""
+            },
+            "match": "(withPath\\(\"/liked-songs\"\\))",
+            "replace": "$1.withLocale(\"en\")"
+        },
+        "lyrics-old-on": {
+            "version": {
+                "fr": "1.1.70",
+                "to": "1.2.35"
+            },
+            "match": "((?:\\(?await )?.\\.build.{20,60}encodeURIComponent.{20,140}\"/track/{trackId}.+?)(.send)",
+            "replace": "$1.withHeaders([{key:'spotify-app-version',value:'1.2.43'}])$2"
+        },
+        "lyrics-block": {
+            "version": {
+                "fr": "1.1.70",
+                "to": "1.2.40"
+            },
+            "match": "(?:\\(?await )?.\\.build.{20,60}encodeURIComponent.{20,140}\"\\/track\\/{trackId}.+?send\\(\\)(?:\\)\\.body)?",
+            "replace": "{}"
+        },
+        "fixTitlebarHeight": {
+            "version": {
+                "fr": "1.2.45",
+                "to": "1.2.45"
+            },
+            "match": "(\"update_titlebar\",height:).",
+            "replace": "$1'40'"
+        },
+        "mock": {
+            "version": {
+                "fr": "1.2.55",
+                "to": ""
+            },
+            "match": "/(?:leavebehinds/mock|leavebehinds|mock|sponsoredplaylist)/",
+            "replace": "/localhost/"
+        },
+        "upgradeButton": {
+            "version": {
+                "fr": "1.2.55",
+                "to": ""
+            },
+            "match": "\"\\(min-width: 1024px\\)\"",
+            "replace": "\"(min-width: 9999990px)\""
+        },
+        "upgradeMenu": {
+            "version": {
+                "fr": "1.2.55",
+                "to": ""
+            },
+            "match": "=>\\{((?:(?!=>\\{).)*?(?=\"loggedin_upgrade_menu))",
+            "replace": "=>{ return null; $1"
+        },
+        "hideEmptyYourEpisodes": {
+            "version": {
+                "fr": "1.2.78",
+                "to": ""
+            },
+            "match": "(includeYourEpisodes\\?\\{inclusionMode:[^,}]+\\.)INCLUDE_ALWAYS",
+            "replace": "$1INCLUDE_IF_NOT_EMPTY"
+        },
+        "discriptions": {
+            "version": {
+                "fr": "1.1.59",
+                "to": ""
+            },
+            "match": "((..createElement|children:\\(.{1,7}\\))\\(.{1,7},{source:).{1,7}get\\(\"about.copyright\",.\\),paragraphClassName:(?:\"[\\w]+\"|\\w+)}\\)",
+            "replace": "<h3>More about SpotX</h3><br><details><summary>{0} Github</summary><a href='https://github.com/SpotX-Official/SpotX'>SpotX-Windows</a><br><a href='https://github.com/SpotX-Official/SpotX-Bash'>SpotX-Mac/Linux</a><br><br/></details><details><summary>{1} Telegram</summary><a href='https://t.me/SpotxCommunity'>SpotX Community</a><br><a href='https://t.me/spotify_windows_mod'>SpotX Channel</a><br><br/></details><details><summary>{2} FAQ</summary><a href='https://te.legra.ph/SpotX-FAQ-09-19'>Windows</a><br><a href='https://github.com/jetfir3/SpotX-Bash/wiki/SpotX%E2%80%90Bash-FAQ'>Mac/Linux</a></details><br><h4>DISCLAIMER</h4>SpotX is a modified version of the official Spotify client, provided as an evaluation version, you use it at your own risk.",
+            "svgtg": "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path id='telegram-1' d='M18.384,22.779c0.322,0.228 0.737,0.285 1.107,0.145c0.37,-0.141 0.642,-0.457 0.724,-0.84c0.869,-4.084 2.977,-14.421 3.768,-18.136c0.06,-0.28 -0.04,-0.571 -0.26,-0.758c-0.22,-0.187 -0.525,-0.241 -0.797,-0.14c-4.193,1.552 -17.106,6.397 -22.384,8.35c-0.335,0.124 -0.553,0.446 -0.542,0.799c0.012,0.354 0.25,0.661 0.593,0.764c2.367,0.708 5.474,1.693 5.474,1.693c0,0 1.452,4.385 2.209,6.615c0.095,0.28 0.314,0.5 0.603,0.576c0.288,0.075 0.596,-0.004 0.811,-0.207c1.216,-1.148 3.096,-2.923 3.096,-2.923c0,0 3.572,2.619 5.598,4.062Zm-11.01,-8.677l1.679,5.538l0.373,-3.507c0,0 6.487,-5.851 10.185,-9.186c0.108,-0.098 0.123,-0.262 0.033,-0.377c-0.089,-0.115 -0.253,-0.142 -0.376,-0.064c-4.286,2.737 -11.894,7.596 -11.894,7.596Z' fill='#fff'/></svg>",
+            "svggit": "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path d='M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z' fill='#fff'/></svg>",
+            "svgfaq": "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path d='M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1.25 17c0 .69-.559 1.25-1.25 1.25-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25c.691 0 1.25.56 1.25 1.25zm1.393-9.998c-.608-.616-1.515-.955-2.551-.955-2.18 0-3.59 1.55-3.59 3.95h2.011c0-1.486.829-2.013 1.538-2.013.634 0 1.307.421 1.364 1.226.062.847-.39 1.277-.962 1.821-1.412 1.343-1.438 1.993-1.432 3.468h2.005c-.013-.664.03-1.203.935-2.178.677-.73 1.519-1.638 1.536-3.022.011-.924-.284-1.719-.854-2.297z' fill='#fff'/></svg>"
+        },
+        "ForcedExp": {
+            "version": {
+                "fr": "1.1.67",
+                "to": ""
+            },
+            "match": "((?:{configuration|{resolver|instance):(.).(?:getRemoteConfig|getUrlDispenserServiceClient).+?;)",
+            "replace": "$1const experiments={enable:[],disable:[],custom:[]},setExpValue=(v,e,val)=>v&&(v.set?v.set(e,val):v[e]&&(v[e].value=val)),config=$2.getRemoteConfigResolver?.()||$2.getRemoteConfiguration?.();config&&((values=>{for(const type in experiments)experiments[type].forEach(exp=>setExpValue(values,type==='custom'?exp.name:exp,type==='custom'?exp.value:type==='enable'));(window.Spotx??={}).RemoteExp=values})(config.values||config.activeProperties));"
+        },
+        "themelyrics": {
+            "theme": {
+                "default": {
+                    "pasttext": "#575757",
+                    "current": "#C8C8C8",
+                    "next": "#575757",
+                    "hover": "#C8C8C8",
+                    "background": "#121212",
+                    "maxmatch": "#969696"
+                },
+                "red": {
+                    "pasttext": "#575757",
+                    "current": "#FF3737",
+                    "next": "#575757",
+                    "hover": "#C8C8C8",
+                    "background": "#121212",
+                    "maxmatch": "#969696"
+                },
+                "orange": {
+                    "pasttext": "#575757",
+                    "current": "#F68D00",
+                    "next": "#575757",
+                    "hover": "#C8C8C8",
+                    "background": "#121212",
+                    "maxmatch": "#969696"
+                },
+                "yellow": {
+                    "pasttext": "#575757",
+                    "current": "#ECE224",
+                    "next": "#575757",
+                    "hover": "#C8C8C8",
+                    "background": "#121212",
+                    "maxmatch": "#969696"
+                },
+                "spotify": {
+                    "pasttext": "#575757",
+                    "current": "#1ED760",
+                    "next": "#575757",
+                    "hover": "#C8C8C8",
+                    "background": "#121212",
+                    "maxmatch": "#969696"
+                },
+                "spotify#2": {
+                    "pasttext": "#9b9b9b",
+                    "current": "#1ed760",
+                    "next": "#666666",
+                    "hover": "#f2f2f2",
+                    "background": "#242424",
+                    "maxmatch": "#C2C2C2"
+                },
+                "blue": {
+                    "pasttext": "#575757",
+                    "current": "#00DFEA",
+                    "next": "#575757",
+                    "hover": "#C8C8C8",
+                    "background": "#121212",
+                    "maxmatch": "#969696"
+                },
+                "purple": {
+                    "pasttext": "#575757",
+                    "current": "#9E6BE3",
+                    "next": "#575757",
+                    "hover": "#C8C8C8",
+                    "background": "#121212",
+                    "maxmatch": "#969696"
+                },
+                "strawberry": {
+                    "pasttext": "#F17F7F",
+                    "current": "#E43A47",
+                    "next": "#595959",
+                    "hover": "#F2F2F2",
+                    "background": "#1C1C1E",
+                    "maxmatch": "#595959"
+                },
+                "pumpkin": {
+                    "pasttext": "#FDAC69",
+                    "current": "#E88500",
+                    "next": "#595959",
+                    "hover": "#F2F2F2",
+                    "background": "#1C1C1E",
+                    "maxmatch": "#595959"
+                },
+                "sandbar": {
+                    "pasttext": "#FFDB7A",
+                    "current": "#F5BA18",
+                    "next": "#595959",
+                    "hover": "#F2F2F2",
+                    "background": "#1C1C1E",
+                    "maxmatch": "#595959"
+                },
+                "radium": {
+                    "pasttext": "#AAFFA3",
+                    "current": "#17D344",
+                    "next": "#595959",
+                    "hover": "#F2F2F2",
+                    "background": "#1C1C1E",
+                    "maxmatch": "#595959"
+                },
+                "oceano": {
+                    "pasttext": "#70DBF0",
+                    "current": "#13A1BD",
+                    "next": "#595959",
+                    "hover": "#F2F2F2",
+                    "background": "#1C1C1E",
+                    "maxmatch": "#595959"
+                },
+                "royal": {
+                    "pasttext": "#B8A3EB",
+                    "current": "#8461DD",
+                    "next": "#595959",
+                    "hover": "#F2F2F2",
+                    "background": "#1C1C1E",
+                    "maxmatch": "#595959"
+                },
+                "github": {
+                    "pasttext": "#AD82F8",
+                    "current": "#7EE787",
+                    "next": "#47566D",
+                    "hover": "#70B3FF",
+                    "background": "#161B22",
+                    "maxmatch": "#408BD0"
+                },
+                "discord": {
+                    "pasttext": "#616774",
+                    "current": "#7A8FDC",
+                    "next": "#616774",
+                    "hover": "#FFFFFF",
+                    "background": "#23272A",
+                    "maxmatch": "#616774"
+                },
+                "drot": {
+                    "pasttext": "#505050",
+                    "current": "#F37171",
+                    "next": "#505050",
+                    "hover": "#A13131",
+                    "background": "#191414",
+                    "maxmatch": "#787878"
+                },
+                "forest": {
+                    "pasttext": "#505050",
+                    "current": "#AEF97B",
+                    "next": "#505050",
+                    "hover": "#418022",
+                    "background": "#141914",
+                    "maxmatch": "#787878"
+                },
+                "fresh": {
+                    "pasttext": "#505050",
+                    "current": "#50DCF0",
+                    "next": "#505050",
+                    "hover": "#0B7383",
+                    "background": "#14191E",
+                    "maxmatch": "#787878"
+                },
+                "zing": {
+                    "pasttext": "#4E596F",
+                    "current": "#F67064",
+                    "next": "#4E596F",
+                    "hover": "#FFFFFF",
+                    "background": "#202430",
+                    "maxmatch": "#9EA8BC"
+                },
+                "pinkle": {
+                    "pasttext": "#9579E3",
+                    "current": "#CD3B99",
+                    "next": "#5E547C",
+                    "hover": "#FFFFFF",
+                    "background": "#1C1925",
+                    "maxmatch": "#5E547C"
+                },
+                "krux": {
+                    "pasttext": "#5C89D2",
+                    "current": "#01C38D",
+                    "next": "#696E79",
+                    "hover": "#FFFFFF",
+                    "background": "#191E29",
+                    "maxmatch": "#696E79"
+                },
+                "blueberry": {
+                    "pasttext": "#1CAAC6",
+                    "current": "#90E0F0",
+                    "next": "#516377",
+                    "hover": "#A0D1FA",
+                    "background": "#232937",
+                    "maxmatch": "#516377"
+                },
+                "postlight": {
+                    "pasttext": "#C9A8FE",
+                    "current": "#9D65C7",
+                    "next": "#534D6F",
+                    "hover": "#D1D1D1",
+                    "background": "#13101C",
+                    "maxmatch": "#534D6F"
+                },
+                "relish": {
+                    "pasttext": "#9D2117",
+                    "current": "#C8C8C8",
+                    "next": "#C8A032",
+                    "hover": "#E5CB8B",
+                    "background": "#121212",
+                    "maxmatch": "#787878"
+                },
+                "turquoise": {
+                    "pasttext": "#00656aa0",
+                    "current": "#01dfea",
+                    "next": "#575757",
+                    "hover": "#a97aff",
+                    "background": "#121212",
+                    "maxmatch": "#00656a"
+                },
+                "lavender": {
+                    "pasttext": "#B8A2EA",
+                    "current": "#8462DD",
+                    "next": "#575757",
+                    "hover": "#F2F2F2",
+                    "background": "#121212",
+                    "maxmatch": "#C2C2C2"
+                }
+            }
+        },
+        "collaboration": {
+            "version": {
+                "fr": "1.1.74",
+                "to": "1.2.81"
+            },
+            "match": "[\\w$]+\\??\\.canAdministratePermissions(\\W.*?\"permissions\\.invite-collaborators\")",
+            "replace": "false$1"
+        },
+        "byspotx": {
+            "add": "// Patched by SpotX"
+        },
+        "disablesentry": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": [
+                "@\\w+/gabo[^\"]+"
+            ],
+            "replace": [
+                ""
+            ]
+        },
+        "cssmin": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": [
+                "[/]\\*([^*]|[\r\n]|(\\*([^/]|[\r\n])))*\\*[/]",
+                "[/][/]#\\s.*",
+                "\r?\n(?!\\(1|\\d)"
+            ],
+            "replace": [
+                "",
+                "",
+                ""
+            ]
+        },
+        "htmlmin": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": [
+                "<li><a href=\"#[A-Za-z0-9]{5}\">zlib</a></li>\n(.|\n)*</p><!-- END CONTAINER DEPS LICENSES -->(</div>)",
+                "\t",
+                "  ",
+                "(?m)(^\\s*\r?\n)",
+                "\r?\n(?!\\(1|\\d)"
+            ],
+            "replace": [
+                "$2",
+                "",
+                "",
+                "",
+                ""
+            ]
+        },
+        "blankmin": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": [
+                "  ",
+                "(?m)(^\\s*\r?\n)",
+                "\r?\n(?!\\(1|\\d)"
+            ],
+            "replace": [
+                "",
+                "",
+                ""
+            ]
+        },
+        "minjs": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": [
+                "[/][/][#] sourceMappingURL=.*[.]map",
+                "\r?\n(?!\\(1|\\d)"
+            ],
+            "replace": [
+                "",
+                ""
+            ]
+        },
+        "minjson": {
+            "version": {
+                "fr": "1.1.70",
+                "to": ""
+            },
+            "match": [
+                "  ",
+                "    ",
+                "\": ",
+                "\r?\n(?!\\(1|\\d)"
+            ],
+            "replace": [
+                "",
+                "",
+                "\":",
+                ""
+            ]
+        },
+        "block_subfeeds": {
+            "version": {
+                "fr": "1.2.36",
+                "to": ""
+            },
+            "add": " .LVMjmN2CaPruPAo62RAY, .Wn4fEKCJ6jYPfG2Y0ABn, .Y3Kd8WKnE3ZW9lzgA8nN, .C_T1Uoz7Fws_AFDl { display: none !important }"
+        },
+        "downloadquality": {
+            "version": {
+                "fr": "1.2.30",
+                "to": ""
+            },
+            "add": " :is(.weV_qxFz4gF5sPotO10y, .BMtRRwqaJD_95vJFMFD0, .eguwzH_QWTBXry7hiNj3, .qV_CxbowaNkMarye, .qV_CxbowaNkMarye):has([for=\"desktop.settings.downloadQuality\"]) {display: none}"
+        },
+        "downloadicon": {
+            "version": {
+                "fr": "1.1.74",
+                "to": ""
+            },
+            "add": " .BKsbV2Xl786X9a09XROH, .GWCBhKJqeZal3n5tCQwl, .pX3IkLhEry0wVfiU {display:none}"
+        },
+        "submenudownload": {
+            "version": {
+                "fr": "1.1.74",
+                "to": ""
+            },
+            "add": " .pzkhLqffqF_4hucrVVQA, .egE6UQjF_UUoCzvMxREj, .Y98_oiegQgSpY_o7hoKG, .tT_JypfxNakuY1jHgyBN, .zVA1h9TUy8QQBogj {display:none}"
+        },
+        "veryhighstream": {
+            "version": {
+                "fr": "1.1.74",
+                "to": "1.2.29"
+            },
+            "add": " #desktop\\.settings\\.streamingQuality>option:nth-child(5) {display:none}"
+        },
+        "fix-scrollbar": {
+            "version": {
+                "fr": "1.1.59",
+                "to": ""
+            },
+            "add": " .main-view-container__scroll-node > .os-scrollbar-vertical {top:0px !important}"
+        },
+        "fix-old-theme": {
+            "version": {
+                "fr": "1.1.74",
+                "to": "1.2.13"
+            },
+            "match": "((LKgm9fCDTO7wqig_5U1q|eFQFeXVbY8rrcTagg0oH){--left-sidebar-item-height.+?margin-top)(:\\d+px)",
+            "replace": "$1:0px"
+        },
+        "searchFixes": {
+            "version": {
+                "fr": "1.1.85",
+                "to": "1.2.57"
+            },
+            "match": "(typeName\\])",
+            "replace": "$1 || []"
         }
     }
 }
