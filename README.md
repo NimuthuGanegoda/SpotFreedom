@@ -56,6 +56,8 @@ SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its co
 
 > **Note on BlockTheSpot:**
 > BlockTheSpot (DLL Injection) is now **enabled by default** as the primary ad-blocking method. This provides enhanced ad-blocking capabilities using the proven approach from https://github.com/mrpond/BlockTheSpot. If you experience issues or prefer the native binary patching method instead, you can disable BlockTheSpot by running the installer with the `-no_bts` parameter.
+>
+> **Automatic Updates:** This repository is automatically monitored for BlockTheSpot updates. When a new version is released, a pull request is automatically created to track the update.
 
 <h1 id="installation--update">Installation / Update</h1>
 <h3>Choose installation type:</h3>
