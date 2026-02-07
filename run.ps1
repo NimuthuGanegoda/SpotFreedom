@@ -917,13 +917,15 @@ try {
 
 # New: Apply Native Patches (Fixes Black Screen & Integrity)
 # We do this before or after Restore-Backups (Restore-Backups restores original binaries, so we must patch after)
+# Always apply signature fixes to prevent black screen issues
+Reset-Dll-Sign -FilePath $spotifyDll
+Remove-Signature-FromFiles @("Spotify.exe", "Spotify.dll", "chrome_elf.dll")
+
 if ($no_bts) {
-    # If not using BlockTheSpot, we must ensure binaries are patched to allow modified XPUI
-    Reset-Dll-Sign -FilePath $spotifyDll
-    Remove-Signature-FromFiles @("Spotify.exe", "Spotify.dll", "chrome_elf.dll")
+    # If not using BlockTheSpot, apply binary patches to allow modified XPUI
     Patch-Binary $patchesJson
 } else {
-    Write-Host "Using BlockTheSpot mode (Skipping native binary patching)..." -ForegroundColor Yellow
+    Write-Host "Using BlockTheSpot mode (Signature fixes applied, skipping binary patching)..." -ForegroundColor Yellow
 }
 
 # Always patch XPUI unless specifically disabled
