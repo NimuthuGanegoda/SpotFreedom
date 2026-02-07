@@ -38,8 +38,8 @@ SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its co
 
 - **🚫 BlockTheSpot Integration:** Uses the proven DLL injection method from BlockTheSpot for superior ad-blocking.
 - **🔄 Automatic Update Checking:** Verifies the latest Spotify version from loadspot.pages.dev to ensure patches remain compatible.
-- **🌍 Built-in Proxy/VPN Support (Windows):** Easily configure proxies to bypass geo-restrictions directly via installation parameters.
-- **🎨 Seamless Spicetify Integration (Windows):** Automatically install or update Spicetify alongside your patches with the simple `-spicetify` switch.
+- **🌍 Built-in Proxy/VPN Support:** Easily configure proxies to bypass geo-restrictions directly via installation parameters (Windows only).
+- **🎨 Seamless Spicetify Integration:** Automatically install or update Spicetify alongside your patches with the simple `-spicetify` switch (Windows only).
 - **🛡️ Enhanced Stability:** Uses local patching methods to reduce reliance on external servers for patch data.
 - **🧹 Auto-Cleanup:** Automatically manages and cleans up temporary files (`SpotFreedom_Temp`) for a cleaner system.
 
@@ -49,11 +49,10 @@ SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its co
 - **Hiding podcasts, episodes, and audiobooks** from the homepage (optional)
 - **Block Spotify automatic updates** (optional)
 - **Automatic version checking** from loadspot.pages.dev to ensure compatibility with the latest Spotify version
-- **Built-in Proxy/VPN Support** (Windows) including Outline VPN
-- **Spicetify Integration** (Windows)
+- **Built-in Proxy/VPN Support** including Outline VPN (Windows only)
+- **Spicetify Integration** (Windows only)
 - **BlockTheSpot Integration** (Enabled by default, uses DLL injection from https://github.com/mrpond/BlockTheSpot)
 - **Some native experimental features have been changed**
-- **Analytics sending has been disabled**
 - **Advanced installation [parameters](https://github.com/SpotX-Official/SpotX/discussions/60)**
 
 > **Note on BlockTheSpot:**
@@ -77,7 +76,7 @@ SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its co
 
 or
 
-#### Run The following command in PowerShell:
+#### Run the following command in PowerShell:
 
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -new_theme"
@@ -101,7 +100,7 @@ iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/ma
 
 or
 
-#### Run The following command in PowerShell:
+#### Run the following command in PowerShell:
 
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -v 1.2.13.661.ga588f749-4064 -confirm_spoti_recomended_over -block_update_on"
@@ -130,7 +129,7 @@ iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/ma
 
 or
 
-#### Run The following command in PowerShell:
+#### Run the following command in PowerShell:
 
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"
@@ -156,7 +155,7 @@ iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/ma
 
 or
 
-#### Run The following command in PowerShell:
+#### Run the following command in PowerShell:
 
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -premium -new_theme"
@@ -172,7 +171,7 @@ You can specify various parameters for a more flexible installation, more [detai
 </details>
 
 <details>
-<summary><small>Outline VPN Installation</small></summary><p>
+<summary><small>Outline VPN Configuration (Windows only)</small></summary><p>
 
   #### Configure Spotify to use Outline VPN (Shadowsocks)
 
@@ -193,13 +192,13 @@ You can specify various parameters for a more flexible installation, more [detai
 
   <h4> </h4>
 
-#### Run The following command in PowerShell (Interactive):
+#### Run the following command in PowerShell (Interactive mode with VPN prompt):
 
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') }"
 ```
 
-#### To skip VPN configuration:
+#### To skip VPN configuration prompt:
 
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -no_vpn"
