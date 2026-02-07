@@ -178,12 +178,18 @@ You can specify various parameters for a more flexible installation, more [detai
 
   - Ensures Spotify traffic goes through your Outline Client
   - Requires Outline Client to be running
-  - **Free Access Keys:**
-    - **Poland Server 1:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl134.vpnbook.com:443/?outline=1`
-    - **Poland Server 2:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl140.vpnbook.com:443/?outline=1`
-    - **Canada Server 3:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@ca225.vpnbook.com:443/?outline=1`
+  - **🎨 NEW: Interactive VPN Server UI** - A graphical interface will automatically open to help you select from available VPN servers
+  - **Free VPN Servers from VPNBook.com:**
+    - **Outline/Shadowsocks Servers (Recommended):**
+      - **Poland Server 1:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl134.vpnbook.com:443/?outline=1`
+      - **Poland Server 2:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl140.vpnbook.com:443/?outline=1`
+      - **Canada Server 3:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@ca225.vpnbook.com:443/?outline=1`
+    - **OpenVPN/WireGuard Servers (Requires separate client):**
+      - US: US16, US178 | Canada: CA149, CA196
+      - UK: UK205, UK68 | Germany: DE20, DE220 | France: FR200, FR231
+      - Get credentials at: [https://www.vpnbook.com/freevpn](https://www.vpnbook.com/freevpn)
 
-  > **Note:** VPN configuration is now prompted by default during installation. To disable this prompt, use the `-no_vpn` switch.
+  > **Note:** VPN configuration is now prompted by default during installation with an interactive UI. To disable this prompt, use the `-no_vpn` switch.
 
   <h4> </h4>
 
