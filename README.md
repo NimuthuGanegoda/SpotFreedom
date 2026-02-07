@@ -38,8 +38,8 @@ SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its co
 
 - **🚫 BlockTheSpot Integration:** Uses the proven DLL injection method from BlockTheSpot for superior ad-blocking.
 - **🔄 Automatic Update Checking:** Verifies the latest Spotify version from loadspot.pages.dev to ensure patches remain compatible.
-- **🌍 Built-in Proxy/VPN Support (Windows):** Easily configure proxies to bypass geo-restrictions directly via installation parameters.
-- **🎨 Seamless Spicetify Integration (Windows):** Automatically install or update Spicetify alongside your patches with the simple `-spicetify` switch.
+- **🌍 Built-in Proxy/VPN Support:** Easily configure proxies to bypass geo-restrictions directly via installation parameters (Windows only).
+- **🎨 Seamless Spicetify Integration:** Automatically install or update Spicetify alongside your patches with the simple `-spicetify` switch (Windows only).
 - **🛡️ Enhanced Stability:** Uses local patching methods to reduce reliance on external servers for patch data.
 - **🧹 Auto-Cleanup:** Automatically manages and cleans up temporary files (`SpotFreedom_Temp`) for a cleaner system.
 
@@ -49,11 +49,10 @@ SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its co
 - **Hiding podcasts, episodes, and audiobooks** from the homepage (optional)
 - **Block Spotify automatic updates** (optional)
 - **Automatic version checking** from loadspot.pages.dev to ensure compatibility with the latest Spotify version
-- **Built-in Proxy/VPN Support** (Windows) including Outline VPN
-- **Spicetify Integration** (Windows)
+- **Built-in Proxy/VPN Support** including Outline VPN (Windows only)
+- **Spicetify Integration** (Windows only)
 - **BlockTheSpot Integration** (Enabled by default, uses DLL injection from https://github.com/mrpond/BlockTheSpot)
 - **Some native experimental features have been changed**
-- **Analytics sending has been disabled**
 - **Advanced installation [parameters](https://github.com/SpotX-Official/SpotX/discussions/60)**
 
 > **Note on BlockTheSpot:**
@@ -172,28 +171,35 @@ You can specify various parameters for a more flexible installation, more [detai
 </details>
 
 <details>
-<summary><small>Outline VPN Installation</small></summary><p>
+<summary><small>Outline VPN Configuration (Windows only)</small></summary><p>
 
   #### Configure Spotify to use Outline VPN (Shadowsocks)
 
-  - Ensures Spotify traffic goes through your Outline Client
-  - Requires Outline Client to be running
-  - **Free Access Keys:**
+  During installation on Windows, you'll be prompted to configure proxy/VPN settings via the command-line interface. This feature:
+  
+  - Ensures Spotify traffic goes through your Outline Client or other SOCKS5 proxy
+  - Requires Outline Client to be running locally
+  - Prompts for the local SOCKS5 port during installation
+  
+  **Free VPN Options:**
+  - **Outline VPN Servers (Shadowsocks):**
     - **Poland Server 1:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl134.vpnbook.com:443/?outline=1`
     - **Poland Server 2:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl140.vpnbook.com:443/?outline=1`
     - **Canada Server 3:** `ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@ca225.vpnbook.com:443/?outline=1`
+  - **OpenVPN/WireGuard Servers:** US16, US178, CA149, CA196, UK205, UK68, DE20, DE220, FR200, FR231
+  - Get credentials at: https://www.vpnbook.com/freevpn
 
-  > **Note:** VPN configuration is now prompted by default during installation. To disable this prompt, use the `-no_vpn` switch.
+  > **Note:** VPN configuration is prompted by default during Windows installation. To disable this prompt, use the `-no_vpn` switch.
 
   <h4> </h4>
 
-#### Run The following command in PowerShell (Interactive):
+#### Run The following command in PowerShell (Interactive mode with VPN prompt):
 
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') }"
 ```
 
-#### To skip VPN configuration:
+#### To skip VPN configuration prompt:
 
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -no_vpn"
