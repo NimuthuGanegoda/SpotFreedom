@@ -922,7 +922,7 @@ Reset-Dll-Sign -FilePath $spotifyDll
 Remove-Signature-FromFiles @("Spotify.exe", "Spotify.dll", "chrome_elf.dll")
 
 if ($no_bts) {
-    # If not using BlockTheSpot, we must ensure binaries are patched to allow modified XPUI
+    # If not using BlockTheSpot, apply binary patches to allow modified XPUI
     Patch-Binary $patchesJson
 } else {
     Write-Host "Using BlockTheSpot mode (Signature fixes applied, skipping binary patching)..." -ForegroundColor Yellow
