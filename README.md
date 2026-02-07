@@ -1,12 +1,11 @@
 <p align="center">
-  <a href="https://github.com/NimuthuGanegoda/SpotFreedom/releases"><img src="https://spotx-official.github.io/images/logos/logo.png" /></a>
+  <img src="https://img.shields.io/badge/SpotFreedom-Spotify_Patcher-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="SpotFreedom"/>
 </p>
 
 <p align="center">
-  <a href="https://t.me/spotify_windows_mod"><img src="https://spotx-official.github.io/images/shields/SpotX_Channel.svg"></a>
-  <a href="https://t.me/SpotxCommunity"><img src="https://spotx-official.github.io/images/shields/SpotX_Community.svg"></a>
-  <a href="https://github.com/SpotX-Official/SpotX-Bash"><img src="https://spotx-official.github.io/images/shields/SpotX_for_Mac&Linux.svg"></a>
-  <a href="https://telegra.ph/SpotX-FAQ-09-19"><img src="https://spotx-official.github.io/images/shields/faq.svg"></a>
+  <a href="https://github.com/NimuthuGanegoda/SpotFreedom"><img src="https://img.shields.io/badge/SpotFreedom-Repository-blue"></a>
+  <a href="https://github.com/NimuthuGanegoda/SpotFreedom/releases"><img src="https://img.shields.io/badge/Releases-Latest-green"></a>
+  <a href="https://telegra.ph/SpotX-FAQ-09-19"><img src="https://img.shields.io/badge/FAQ-Read-orange"></a>
 </p>
 
 <h2>
@@ -27,10 +26,11 @@
 
 <h1 id="requirements">Requirements</h1>
 
-- **OS:** Windows 7-11 / Linux / macOS
-- **Spotify:** [Official desktop version](https://loadspot.pages.dev) (Microsoft Store version is not suitable)
-- **PowerShell:** 5.1 and above (Windows)
-- **Bash:** (Linux / macOS)
+- **Operating System:** Windows 7 or later / Linux / macOS
+- **Spotify Client:** [Official Spotify Desktop Application](https://loadspot.pages.dev) (Microsoft Store version not supported)
+- **PowerShell:** Version 5.1 or higher (Windows only)
+- **Bash Shell:** Required for Linux and macOS installations
+- **Internet Connection:** Required for installation and updates
 
 <h1 id="perks">Why SpotFreedom?</h1>
 
