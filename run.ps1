@@ -147,6 +147,32 @@ $xpuiSpa = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.spa'
 $xpuiBak = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.bak'
 $start_menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Spotify.lnk'
 
+# Function to show VPN Server Selection UI
+function Show-VPNServerUI {
+    $vpnHtmlPath = Join-Path $PSScriptRoot "vpn-selector.html"
+    
+    if (Test-Path $vpnHtmlPath) {
+        Write-Host "`nLaunching VPN Server Selection UI..." -ForegroundColor Cyan
+        Write-Host "Opening VPN selector in your default browser..." -ForegroundColor Yellow
+        
+        try {
+            # Open the HTML file in default browser
+            Start-Process $vpnHtmlPath
+            Write-Host "`nPlease select a VPN server from the UI that just opened." -ForegroundColor Green
+            Write-Host "After selecting a server, return here to continue..." -ForegroundColor Yellow
+            return $true
+        }
+        catch {
+            Write-Host "Could not launch VPN UI: $_" -ForegroundColor Red
+            return $false
+        }
+    }
+    else {
+        Write-Host "VPN selector UI not found at: $vpnHtmlPath" -ForegroundColor Red
+        return $false
+    }
+}
+
 # Outline VPN configuration
 if (-not $no_vpn) {
     if ($PSBoundParameters.ContainsKey('ProxyType') -eq $false) {
@@ -156,17 +182,32 @@ if (-not $no_vpn) {
         $ProxyHost = '127.0.0.1'
     }
     if (-not $ProxyPort) {
-        Write-Host "VPN Support (Outline / OpenVPN)" -ForegroundColor Yellow
-        Write-Host "You can use one of these free Outline Access Keys:" -ForegroundColor Cyan
-        Write-Host "Poland Server 1: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl134.vpnbook.com:443/?outline=1" -ForegroundColor White
-        Write-Host "Poland Server 2: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl140.vpnbook.com:443/?outline=1" -ForegroundColor White
-        Write-Host "Canada Server 3: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@ca225.vpnbook.com:443/?outline=1" -ForegroundColor White
+        Write-Host "`n================================================" -ForegroundColor Cyan
+        Write-Host "        VPN Configuration (VPNBook.com)" -ForegroundColor Yellow
+        Write-Host "================================================" -ForegroundColor Cyan
+        
+        # Try to show the UI first
+        $uiLaunched = Show-VPNServerUI
+        
+        if ($uiLaunched) {
+            Write-Host "`n🌐 Available VPN Servers from VPNBook.com:" -ForegroundColor Green
+        }
+        else {
+            Write-Host "`nFalling back to text-based selection..." -ForegroundColor Yellow
+        }
+        
+        Write-Host "`nOutline/Shadowsocks Servers (Recommended):" -ForegroundColor Cyan
+        Write-Host "  Poland Server 1: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl134.vpnbook.com:443/?outline=1" -ForegroundColor White
+        Write-Host "  Poland Server 2: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl140.vpnbook.com:443/?outline=1" -ForegroundColor White
+        Write-Host "  Canada Server 3: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@ca225.vpnbook.com:443/?outline=1" -ForegroundColor White
 
-        Write-Host "`nAlso available (OpenVPN/WireGuard - requires separate client setup):" -ForegroundColor Gray
-        Write-Host "US16, US178, CA149, CA196, UK205, UK68, DE20, DE220, FR200, FR231" -ForegroundColor Gray
-        Write-Host "Get credentials at: https://www.vpnbook.com/freevpn" -ForegroundColor Gray
+        Write-Host "`nOpenVPN/WireGuard Servers (Requires separate client):" -ForegroundColor Gray
+        Write-Host "  US: US16, US178 | Canada: CA149, CA196" -ForegroundColor Gray
+        Write-Host "  UK: UK205, UK68 | Germany: DE20, DE220 | France: FR200, FR231" -ForegroundColor Gray
+        Write-Host "  Get credentials at: https://www.vpnbook.com/freevpn" -ForegroundColor Gray
 
-        Write-Host "`nPlease enter the local SOCKS5 port from your Outline Client (Leave empty to skip proxy setup)." -ForegroundColor Yellow
+        Write-Host "`n📝 Enter the local SOCKS5 port from your Outline Client" -ForegroundColor Yellow
+        Write-Host "   (Leave empty to skip proxy setup)" -ForegroundColor Gray
         $ProxyPort = Read-Host "Port"
     }
 }
