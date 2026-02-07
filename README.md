@@ -34,8 +34,9 @@
 
 <h1 id="perks">Why SpotFreedom?</h1>
 
-SpotFreedom builds upon the solid foundation of SpotX with exclusive features designed for advanced users:
+SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its core ad-blocking technology, with exclusive features designed for advanced users:
 
+- **🚫 BlockTheSpot Integration:** Uses the proven DLL injection method from BlockTheSpot for superior ad-blocking.
 - **🌍 Built-in Proxy/VPN Support (Windows):** Easily configure proxies to bypass geo-restrictions directly via installation parameters.
 - **🎨 Seamless Spicetify Integration (Windows):** Automatically install or update Spicetify alongside your patches with the simple `-spicetify` switch.
 - **🛡️ Enhanced Stability:** Uses local patching methods to reduce reliance on external servers for patch data.
@@ -48,13 +49,13 @@ SpotFreedom builds upon the solid foundation of SpotX with exclusive features de
 - **Block Spotify automatic updates** (optional)
 - **Built-in Proxy/VPN Support** (Windows) including Outline VPN
 - **Spicetify Integration** (Windows)
-- **BlockTheSpot Integration** (Optional via `-bts` switch)
+- **BlockTheSpot Integration** (Enabled by default, uses DLL injection from https://github.com/mrpond/BlockTheSpot)
 - **Some native experimental features have been changed**
 - **Analytics sending has been disabled**
 - **Advanced installation [parameters](https://github.com/SpotX-Official/SpotX/discussions/60)**
 
-> **Note on "Black Screen" Issues:**
-> BlockTheSpot (DLL Injection) is now **disabled by default** to prevent black screen issues on newer Spotify versions (1.2.30+). The installer will automatically clean up legacy BlockTheSpot files (`dpapi.dll`, `config.ini`) to fix broken installations. If you specifically need BlockTheSpot features, run the installer with the `-bts` parameter.
+> **Note on BlockTheSpot:**
+> BlockTheSpot (DLL Injection) is now **enabled by default** as the primary ad-blocking method. This provides enhanced ad-blocking capabilities using the proven approach from https://github.com/mrpond/BlockTheSpot. If you experience issues or prefer the native binary patching method instead, you can disable BlockTheSpot by running the installer with the `-no_bts` parameter.
 
 <h1 id="installation--update">Installation / Update</h1>
 <h3>Choose installation type:</h3>

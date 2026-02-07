@@ -126,8 +126,8 @@ param
     [Parameter(HelpMessage = 'Disable Outline VPN configuration prompt.')]
     [switch]$no_vpn,
 
-    [Parameter(HelpMessage = 'Enable BlockTheSpot (DLL Injection). Warning: May cause black screen on new versions.')]
-    [switch]$bts
+    [Parameter(HelpMessage = 'Disable BlockTheSpot (DLL Injection) and use native binary patching instead.')]
+    [switch]$no_bts
 )
 
 # Ignore errors from `Stop-Process`
@@ -917,7 +917,7 @@ try {
 
 # New: Apply Native Patches (Fixes Black Screen & Integrity)
 # We do this before or after Restore-Backups (Restore-Backups restores original binaries, so we must patch after)
-if (-not $bts) {
+if ($no_bts) {
     # If not using BlockTheSpot, we must ensure binaries are patched to allow modified XPUI
     Reset-Dll-Sign -FilePath $spotifyDll
     Remove-Signature-FromFiles @("Spotify.exe", "Spotify.dll", "chrome_elf.dll")
@@ -929,7 +929,7 @@ if (-not $bts) {
 # Always patch XPUI unless specifically disabled
 Patch-XPUI $patchesJson
 
-if ($bts) {
+if (-not $no_bts) {
     Install-BlockTheSpot
 } else {
     Remove-BlockTheSpot
