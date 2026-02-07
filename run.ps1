@@ -421,7 +421,13 @@ function Get-LatestSpotifyVersion {
         try {
             $json = $response.Content | ConvertFrom-Json
             if ($json.version) { $version = $json.version }
-            if ($json.downloadUrl -or $json.url) { $downloadUrl = ($json.downloadUrl ?? $json.url) }
+            if ($json.downloadUrl -or $json.url) { 
+                if ($json.downloadUrl) { 
+                    $downloadUrl = $json.downloadUrl 
+                } else { 
+                    $downloadUrl = $json.url 
+                }
+            }
         } catch {}
         
         # Pattern 2: HTML content with version in meta tags or specific elements
