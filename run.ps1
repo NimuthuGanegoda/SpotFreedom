@@ -148,6 +148,9 @@ $xpuiBak = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.bak'
 $start_menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Spotify.lnk'
 
 # Function to show VPN Server Selection UI
+# This launches an interactive HTML UI to help users browse and select VPN servers
+# The UI is informative and displays all available servers from vpnbook.com
+# Note: Opens in default browser as a visual guide; users still configure via PowerShell prompts
 function Show-VPNServerUI {
     $vpnHtmlPath = Join-Path $PSScriptRoot "vpn-selector.html"
     
@@ -156,10 +159,10 @@ function Show-VPNServerUI {
         Write-Host "Opening VPN selector in your default browser..." -ForegroundColor Yellow
         
         try {
-            # Open the HTML file in default browser
+            # Open the HTML file in default browser as an informative visual guide
             Start-Process $vpnHtmlPath
-            Write-Host "`nPlease select a VPN server from the UI that just opened." -ForegroundColor Green
-            Write-Host "After selecting a server, return here to continue..." -ForegroundColor Yellow
+            Write-Host "`nPlease review the VPN servers in the UI that just opened." -ForegroundColor Green
+            Write-Host "Copy your chosen server's access key, then return here to continue..." -ForegroundColor Yellow
             return $true
         }
         catch {

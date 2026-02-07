@@ -364,6 +364,13 @@
             document.getElementById('confirmBtn').disabled = false;
         }
 
+        /**
+         * Handles server selection confirmation
+         * NOTE: This UI is opened in the default browser via PowerShell's Start-Process,
+         * which doesn't support WebView2 communication. The UI serves as an informative
+         * display to help users visualize and select servers. The actual configuration
+         * is still done through PowerShell prompts where users enter the SOCKS5 port.
+         */
         function confirmSelection() {
             if (!selectedServer) return;
 
@@ -373,19 +380,19 @@
                 server: selectedServer
             };
 
-            // Try to communicate with PowerShell
+            // Try to communicate with PowerShell (works only if opened in WebView2)
             if (window.chrome && window.chrome.webview) {
-                // For WebView2
+                // For WebView2 - future enhancement
                 window.chrome.webview.postMessage(JSON.stringify(result));
             } else {
-                // Fallback: write to a temp file that PowerShell can read
+                // Standard browser fallback - display information to user
                 const resultJson = JSON.stringify(result, null, 2);
                 console.log('Selected server:', resultJson);
                 
                 // Display instructions for manual setup
                 alert(`Server Selected: ${selectedServer.name}\n\n` +
                       (selectedServer.accessKey ? 
-                       `Copy this Outline Access Key to your Outline Client:\n${selectedServer.accessKey}` :
+                       `Copy this Outline Access Key to your Outline Client:\n${selectedServer.accessKey}\n\nThen return to PowerShell to enter the SOCKS5 port.` :
                        `This is an OpenVPN server. Get credentials from https://www.vpnbook.com/freevpn`));
                 
                 // Close window
