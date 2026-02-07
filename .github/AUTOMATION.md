@@ -10,9 +10,11 @@ The auto-merge system automatically merges pull requests created by GitHub Actio
 ### How It Works
 
 1. **Trigger**: When a pull request is opened, synchronized, or reopened by `github-actions[bot]`
-2. **Approval**: The workflow automatically approves the PR
-3. **Merge**: The workflow enables auto-merge, which will merge the PR once all required checks pass
+2. **Enable Auto-Merge**: The workflow enables GitHub's auto-merge feature for the PR
+3. **Merge**: The PR automatically merges once all required checks pass
 4. **Cleanup**: The source branch is automatically deleted after merge
+
+**Note**: If your repository has branch protection rules that require pull request reviews, the auto-merge will wait until those reviews are provided. For fully automatic merging without reviews, ensure branch protection allows bypassing reviews for bot PRs or disable required reviews.
 
 ### Workflow File
 - **Location**: `.github/workflows/auto-merge-bot-prs.yml`
@@ -21,11 +23,11 @@ The auto-merge system automatically merges pull requests created by GitHub Actio
 
 ### Key Features
 
-- **Automatic Approval**: PRs from the bot are automatically approved
 - **Auto-Merge**: Uses GitHub's auto-merge feature (`--auto` flag) to merge when checks pass
 - **Safe**: Only applies to PRs created by trusted bot accounts
 - **Squash Merge**: PRs are squashed into a single commit
 - **Branch Cleanup**: Source branches are automatically deleted
+- **No Manual Intervention**: PRs merge automatically once all checks pass (subject to branch protection rules)
 
 ## Automated Workflows
 
