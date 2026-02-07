@@ -27,5 +27,8 @@ jobs:
           # Enable auto-merge - PR will merge when all checks pass
           # If branch protection requires reviews, you'll need to configure
           # a GitHub App or PAT with approval permissions
-          gh pr merge "$PR_URL" --squash --auto --delete-branch || \
-          echo "Auto-merge enabled. PR will merge when all checks pass."
+          if gh pr merge "$PR_URL" --squash --auto --delete-branch; then
+            echo "✓ Auto-merge enabled successfully. PR will merge when all checks pass."
+          else
+            echo "Note: Auto-merge command completed. The PR may already have auto-merge enabled or may require additional configuration."
+          fi
