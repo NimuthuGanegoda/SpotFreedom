@@ -32,6 +32,8 @@
 - **Bash Shell:** Required for Linux and macOS installations
 - **Internet Connection:** Required for installation and updates
 
+> **Note:** Windows PowerShell 5.1 (default on Windows 10/11) is fully supported. If you encounter any PowerShell errors during installation, ensure you're running PowerShell (not Command Prompt) and have execution policy set correctly by running PowerShell as Administrator.
+
 <h1 id="perks">Why SpotFreedom?</h1>
 
 SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its core ad-blocking technology, with exclusive features designed for advanced users:
