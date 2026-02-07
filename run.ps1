@@ -334,6 +334,96 @@ function Get-SpotifyVersion {
     return $null
 }
 
+function Get-LatestSpotifyVersion {
+    <#
+    .SYNOPSIS
+    Checks loadspot.pages.dev for the latest Spotify version
+    
+    .DESCRIPTION
+    Fetches version information from loadspot.pages.dev to determine 
+    the latest available Spotify version and download URL.
+    
+    .OUTPUTS
+    Hashtable with 'Version' and 'Url' properties, or $null if check fails
+    #>
+    
+    $updateUrl = 'https://loadspot.pages.dev/'
+    $cacheFile = Join-Path $env:TEMP 'spotfreedom_latest_version.txt'
+    $cacheAge = 3600 # Cache for 1 hour
+    
+    try {
+        # Check cache first
+        if (Test-Path $cacheFile) {
+            $cacheTime = (Get-Item $cacheFile).LastWriteTime
+            if ((Get-Date) - $cacheTime -lt [TimeSpan]::FromSeconds($cacheAge)) {
+                $cached = Get-Content $cacheFile -Raw | ConvertFrom-Json
+                Write-Host "Using cached version info: $($cached.Version)" -ForegroundColor Cyan
+                return $cached
+            }
+        }
+        
+        Write-Host "Checking for latest Spotify version from loadspot.pages.dev..." -ForegroundColor Cyan
+        
+        # Try to fetch the latest version info
+        # The site may provide JSON API, HTML with version info, or redirect to download
+        $response = Invoke-WebRequest -Uri $updateUrl -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop
+        
+        # Try to extract version from various patterns
+        $version = $null
+        $downloadUrl = $null
+        
+        # Pattern 1: JSON response with version field
+        try {
+            $json = $response.Content | ConvertFrom-Json
+            if ($json.version) { $version = $json.version }
+            if ($json.downloadUrl -or $json.url) { $downloadUrl = ($json.downloadUrl ?? $json.url) }
+        } catch {}
+        
+        # Pattern 2: HTML content with version in meta tags or specific elements
+        if (-not $version) {
+            if ($response.Content -match 'version["\s:=]+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)') {
+                $version = $matches[1]
+            }
+        }
+        
+        # Pattern 3: Check for download links that might contain version
+        if ($response.Content -match 'href="([^"]*SpotifySetup[^"]*)"') {
+            $downloadUrl = $matches[1]
+            if ($downloadUrl -match '([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)') {
+                if (-not $version) { $version = $matches[1] }
+            }
+        }
+        
+        if ($version) {
+            $result = @{
+                Version = $version
+                Url = if ($downloadUrl) { $downloadUrl } else { $updateUrl }
+                CheckedAt = Get-Date
+            }
+            
+            # Cache the result
+            $result | ConvertTo-Json | Set-Content $cacheFile -Force
+            
+            Write-Host "Latest Spotify version available: $version" -ForegroundColor Green
+            return $result
+        } else {
+            Write-Warning "Could not parse version from loadspot.pages.dev"
+            return $null
+        }
+    } catch {
+        Write-Warning "Failed to check for latest version: $_"
+        # Try to return cached data even if expired
+        if (Test-Path $cacheFile) {
+            try {
+                $cached = Get-Content $cacheFile -Raw | ConvertFrom-Json
+                Write-Host "Using stale cached version info: $($cached.Version)" -ForegroundColor Yellow
+                return $cached
+            } catch {}
+        }
+        return $null
+    }
+}
+
 function Is-Ver-Compatible ($ver, $fr, $to) {
     if (-not $ver) { return $true }
     try {
@@ -913,6 +1003,36 @@ try {
 } catch {
     Write-Error "Failed to parse patches.json: $_"
     exit 1
+}
+
+# Check for latest Spotify version from loadspot.pages.dev
+$latestVersionInfo = Get-LatestSpotifyVersion
+if ($latestVersionInfo) {
+    $currentVersion = Get-SpotifyVersion
+    if ($currentVersion) {
+        Write-Host "Current Spotify version: $currentVersion" -ForegroundColor Cyan
+        
+        # Compare versions
+        try {
+            $currentVer = [System.Version]($currentVersion -replace '\.g.*', '')
+            $latestVer = [System.Version]($latestVersionInfo.Version -replace '\.g.*', '')
+            
+            if ($latestVer -gt $currentVer) {
+                Write-Host "A newer version of Spotify is available: $($latestVersionInfo.Version)" -ForegroundColor Yellow
+                Write-Host "Download from: $($latestVersionInfo.Url)" -ForegroundColor Yellow
+                Write-Host "Consider updating to ensure patches work correctly with the latest version." -ForegroundColor Yellow
+            } elseif ($latestVer -eq $currentVer) {
+                Write-Host "You are running the latest version of Spotify." -ForegroundColor Green
+            } else {
+                Write-Host "You are running a newer version than the one listed on loadspot.pages.dev" -ForegroundColor Cyan
+            }
+        } catch {
+            Write-Host "Version comparison skipped (parsing error)" -ForegroundColor Gray
+        }
+    } else {
+        Write-Host "Latest Spotify version from loadspot.pages.dev: $($latestVersionInfo.Version)" -ForegroundColor Green
+        Write-Host "Download from: $($latestVersionInfo.Url)" -ForegroundColor Green
+    }
 }
 
 # New: Apply Native Patches (Fixes Black Screen & Integrity)

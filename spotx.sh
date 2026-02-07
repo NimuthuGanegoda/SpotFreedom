@@ -106,6 +106,70 @@ verCk=$(echo "9QzRYNGayMGaKdUZwkzRjpXODplb1k3YwJ0QRdWVHJWaGdkYwZUbkhmQ5NGcCNlZ5h
 verCk2=$(eval echo "${verCk}")
 ver() { local a; IFS=. read -r -a a <<< "$@"; printf "%d%03d%04d%05d\n" "${a[0]:-0}" "${a[1]:-0}" "${a[2]:-0}" "${a[3]:-0}"; }
 ver_check() { (($(ver "${sxbVer}") > $(ver "1.1.0.0") && $(ver "${sxbVer}") < $(ver "${sxbLive}"))) && echo -e "${verCk2}"; }
+
+check_loadspot_version() {
+  # Check for latest Spotify version from loadspot.pages.dev
+  local cache_file="/tmp/spotfreedom_latest_version_cache.txt"
+  local cache_age=3600  # 1 hour in seconds
+  local update_url="https://loadspot.pages.dev/"
+  
+  # Check cache first
+  if [[ -f "$cache_file" ]]; then
+    local cache_time=$(stat -c %Y "$cache_file" 2>/dev/null || stat -f %m "$cache_file" 2>/dev/null)
+    local current_time=$(date +%s)
+    if (( current_time - cache_time < cache_age )); then
+      echo -e "${green}Using cached version info from loadspot.pages.dev${clr}"
+      cat "$cache_file"
+      return 0
+    fi
+  fi
+  
+  echo -e "${green}Checking for latest Spotify version from loadspot.pages.dev...${clr}"
+  
+  # Try to fetch version info using curl (preferred) or wget
+  local response=""
+  if command -v curl >/dev/null 2>&1; then
+    response=$(curl -s -L --max-time 10 "$update_url" 2>/dev/null)
+  elif command -v wget >/dev/null 2>&1; then
+    response=$(wget -q -O - --timeout=10 "$update_url" 2>/dev/null)
+  fi
+  
+  if [[ -n "$response" ]]; then
+    # Try to extract version from various patterns
+    local version=""
+    
+    # Pattern 1: JSON with version field
+    version=$(echo "$response" | grep -oP '"version"\s*:\s*"\K[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+    
+    # Pattern 2: HTML with version in text
+    if [[ -z "$version" ]]; then
+      version=$(echo "$response" | grep -oP 'version["\s:=]+\K[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+    fi
+    
+    # Pattern 3: Download link with version
+    if [[ -z "$version" ]]; then
+      version=$(echo "$response" | grep -oP 'SpotifySetup.*?([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)' | grep -oP '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+    fi
+    
+    if [[ -n "$version" ]]; then
+      local msg="Latest Spotify version from loadspot.pages.dev: ${green}${version}${clr}"
+      echo -e "$msg"
+      echo "$msg" > "$cache_file"
+      return 0
+    fi
+  fi
+  
+  # If we couldn't get version, check stale cache
+  if [[ -f "$cache_file" ]]; then
+    echo -e "${yellow}Could not fetch latest version, using stale cache${clr}"
+    cat "$cache_file"
+  else
+    echo -e "${yellow}Could not fetch latest Spotify version from loadspot.pages.dev${clr}"
+  fi
+  
+  return 1
+}
+
 [[ "${verPrint}" ]] && { echo -e "SpotFreedom version ${sxbVer}\n"; ver_check; exit 0; }
 
 echo
@@ -399,6 +463,7 @@ run_prepare() {
   existing_client_ver
   client_version_output
   ver_check
+  check_loadspot_version
   command pgrep [sS]potify 2>/dev/null | xargs kill -9 2>/dev/null
   [[ -f "${appBinary}" ]] && cleanAB=$(perl -ne '$found1 = 1 if /\x00\x73\x6C\x6F\x74\x73\x00/; $found2 = 1 if /\x2D\x70\x72\x65\x72\x6F\x6C\x6C/; END { print "true" if $found1 && $found2 }' "${appBinary}")
 }
