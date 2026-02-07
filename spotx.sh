@@ -109,7 +109,10 @@ ver_check() { (($(ver "${sxbVer}") > $(ver "1.1.0.0") && $(ver "${sxbVer}") < $(
 
 check_loadspot_version() {
   # Check for latest Spotify version from loadspot.pages.dev
-  local cache_file="/tmp/spotfreedom_latest_version_cache.txt"
+  # Use XDG_CACHE_HOME if available, otherwise fall back to $HOME/.cache or /tmp
+  local cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/spotfreedom"
+  [[ ! -d "$cache_dir" ]] && mkdir -p "$cache_dir" 2>/dev/null || cache_dir="/tmp"
+  local cache_file="${cache_dir}/spotfreedom_version_cache.txt"
   local cache_age=3600  # 1 hour in seconds
   local update_url="https://loadspot.pages.dev/"
   
@@ -138,23 +141,25 @@ check_loadspot_version() {
     # Try to extract version from various patterns
     local version=""
     
-    # Pattern 1: JSON with version field
-    version=$(echo "$response" | grep -oP '"version"\s*:\s*"\K[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-    
-    # Pattern 2: HTML with version in text
+    # Pattern 1: JSON with version field (using sed for portability)
     if [[ -z "$version" ]]; then
-      version=$(echo "$response" | grep -oP 'version["\s:=]+\K[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+      version=$(echo "$response" | sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\)".*/\1/p' | head -1)
+    fi
+    
+    # Pattern 2: HTML with version in text (using grep -E for portability)
+    if [[ -z "$version" ]]; then
+      version=$(echo "$response" | grep -oE 'version["\s:=]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1)
     fi
     
     # Pattern 3: Download link with version
     if [[ -z "$version" ]]; then
-      version=$(echo "$response" | grep -oP 'SpotifySetup.*?([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)' | grep -oP '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+      version=$(echo "$response" | grep -oE 'SpotifySetup[^"]*[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1)
     fi
     
     if [[ -n "$version" ]]; then
       local msg="Latest Spotify version from loadspot.pages.dev: ${green}${version}${clr}"
       echo -e "$msg"
-      echo "$msg" > "$cache_file"
+      echo "$msg" > "$cache_file" 2>/dev/null
       return 0
     fi
   fi

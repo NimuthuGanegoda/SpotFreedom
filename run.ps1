@@ -348,7 +348,8 @@ function Get-LatestSpotifyVersion {
     #>
     
     $updateUrl = 'https://loadspot.pages.dev/'
-    $cacheFile = Join-Path $env:TEMP 'spotfreedom_latest_version.txt'
+    $tempPath = if ($env:TEMP) { $env:TEMP } else { [System.IO.Path]::GetTempPath() }
+    $cacheFile = Join-Path $tempPath 'spotfreedom_version_cache.txt'
     $cacheAge = 3600 # Cache for 1 hour
     
     try {
@@ -1014,8 +1015,12 @@ if ($latestVersionInfo) {
         
         # Compare versions
         try {
-            $currentVer = [System.Version]($currentVersion -replace '\.g.*', '')
-            $latestVer = [System.Version]($latestVersionInfo.Version -replace '\.g.*', '')
+            # Strip git suffix if present (e.g., 1.2.3.4.g123abc -> 1.2.3.4)
+            $currentVerStr = if ($currentVersion -match '^(\d+\.\d+\.\d+\.\d+)') { $matches[1] } else { $currentVersion }
+            $latestVerStr = if ($latestVersionInfo.Version -match '^(\d+\.\d+\.\d+\.\d+)') { $matches[1] } else { $latestVersionInfo.Version }
+            
+            $currentVer = [System.Version]$currentVerStr
+            $latestVer = [System.Version]$latestVerStr
             
             if ($latestVer -gt $currentVer) {
                 Write-Host "A newer version of Spotify is available: $($latestVersionInfo.Version)" -ForegroundColor Yellow
