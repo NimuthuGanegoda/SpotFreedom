@@ -1,0 +1,108 @@
+name: Auto-Update BlockTheSpot
+
+on:
+  schedule:
+    # Run every day at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for BlockTheSpot updates
+        id: check_update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the latest release from BlockTheSpot with authentication
+          LATEST_RELEASE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/mrpond/BlockTheSpot/releases/latest | jq -r '.tag_name')
+          echo "Latest BlockTheSpot version: $LATEST_RELEASE"
+          echo "latest_version=$LATEST_RELEASE" >> $GITHUB_OUTPUT
+          
+          # Check if we have a stored version file
+          if [ -f .blockthespot_version ]; then
+            CURRENT_VERSION=$(cat .blockthespot_version)
+            echo "Current version: $CURRENT_VERSION"
+          else
+            CURRENT_VERSION=""
+            echo "No current version found"
+          fi
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          
+          # Compare versions (skip if current version is 'unknown')
+          if [ "$CURRENT_VERSION" = "unknown" ]; then
+            echo "First run with unknown version - will update to track current version"
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+          elif [ "$LATEST_RELEASE" != "$CURRENT_VERSION" ]; then
+            echo "Update available: $CURRENT_VERSION -> $LATEST_RELEASE"
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+          else
+            echo "Already up to date"
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create update branch
+        if: steps.check_update.outputs.needs_update == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          BRANCH_NAME="auto-update/blockthespot-${{ steps.check_update.outputs.latest_version }}"
+          git checkout -b "$BRANCH_NAME"
+
+      - name: Update version file
+        if: steps.check_update.outputs.needs_update == 'true'
+        run: |
+          echo "${{ steps.check_update.outputs.latest_version }}" > .blockthespot_version
+          git add .blockthespot_version
+
+      - name: Update README with new version
+        if: steps.check_update.outputs.needs_update == 'true'
+        run: |
+          # Update README.md to mention the new BlockTheSpot version
+          # Replace any existing version suffix to avoid duplicates
+          if grep -q "BlockTheSpot" README.md; then
+            sed -i "s|BlockTheSpot (https://github.com/mrpond/BlockTheSpot)[^)]*)|BlockTheSpot (https://github.com/mrpond/BlockTheSpot) v${{ steps.check_update.outputs.latest_version }})|g" README.md || true
+            git add README.md || true
+          fi
+
+      - name: Commit changes
+        if: steps.check_update.outputs.needs_update == 'true'
+        id: commit_changes
+        run: |
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "chore: update BlockTheSpot to ${{ steps.check_update.outputs.latest_version }}"
+            git push origin "auto-update/blockthespot-${{ steps.check_update.outputs.latest_version }}"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.check_update.outputs.needs_update == 'true' && steps.commit_changes.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "chore: update BlockTheSpot to ${{ steps.check_update.outputs.latest_version }}" \
+            --body "This PR automatically updates the BlockTheSpot dependency from ${{ steps.check_update.outputs.current_version }} to ${{ steps.check_update.outputs.latest_version }}.
+
+          **Changes:**
+          - Updated BlockTheSpot version tracking to ${{ steps.check_update.outputs.latest_version }}
+          - BlockTheSpot will be automatically downloaded at the new version when users run the installer
+
+          **BlockTheSpot Release:** https://github.com/mrpond/BlockTheSpot/releases/tag/${{ steps.check_update.outputs.latest_version }}
+
+          This PR was automatically created by the Auto-Update BlockTheSpot workflow." \
+            --head "auto-update/blockthespot-${{ steps.check_update.outputs.latest_version }}" \
+            --base main
