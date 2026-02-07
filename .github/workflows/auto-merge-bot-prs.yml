@@ -1,0 +1,34 @@
+name: Auto-merge Bot PRs
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    # Only auto-merge PRs created by github-actions[bot]
+    if: github.event.pull_request.user.login == 'github-actions[bot]'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Enable auto-merge
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          # Mark PR as ready if it's a draft
+          gh pr ready "$PR_URL" || true
+          # Enable auto-merge - PR will merge when all checks pass
+          # If branch protection requires reviews, you'll need to configure
+          # a GitHub App or PAT with approval permissions
+          if gh pr merge "$PR_URL" --squash --auto --delete-branch; then
+            echo "✓ Auto-merge enabled successfully. PR will merge when all checks pass."
+          else
+            echo "Note: Auto-merge command completed. The PR may already have auto-merge enabled or may require additional configuration."
+          fi
