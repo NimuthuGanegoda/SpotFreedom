@@ -37,6 +37,7 @@
 SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its core ad-blocking technology, with exclusive features designed for advanced users:
 
 - **🚫 BlockTheSpot Integration:** Uses the proven DLL injection method from BlockTheSpot for superior ad-blocking.
+- **🔄 Automatic Update Checking:** Verifies the latest Spotify version from loadspot.pages.dev to ensure patches remain compatible.
 - **🌍 Built-in Proxy/VPN Support (Windows):** Easily configure proxies to bypass geo-restrictions directly via installation parameters.
 - **🎨 Seamless Spicetify Integration (Windows):** Automatically install or update Spicetify alongside your patches with the simple `-spicetify` switch.
 - **🛡️ Enhanced Stability:** Uses local patching methods to reduce reliance on external servers for patch data.
@@ -47,6 +48,7 @@ SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its co
 - **Blocks all banner, video, and audio ads** in the client
 - **Hiding podcasts, episodes, and audiobooks** from the homepage (optional)
 - **Block Spotify automatic updates** (optional)
+- **Automatic version checking** from loadspot.pages.dev to ensure compatibility with the latest Spotify version
 - **Built-in Proxy/VPN Support** (Windows) including Outline VPN
 - **Spicetify Integration** (Windows)
 - **BlockTheSpot Integration** (Enabled by default, uses DLL injection from https://github.com/mrpond/BlockTheSpot)
