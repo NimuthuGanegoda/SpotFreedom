@@ -151,15 +151,156 @@ $start_menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Spot
 # This launches an interactive HTML UI to help users browse and select VPN servers
 # The UI is informative and displays all available servers from vpnbook.com
 # Note: Opens in default browser as a visual guide; users still configure via PowerShell prompts
+function Load-WebView2 {
+    $wv2Version = "1.0.2929.43"
+    $wv2PkgUrl = "https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2/$wv2Version"
+    $cacheDir = Join-Path $env:LOCALAPPDATA 'SpotFreedom\WebView2'
+    $dllCore = Join-Path $cacheDir "Microsoft.Web.WebView2.Core.dll"
+    $dllWinForms = Join-Path $cacheDir "Microsoft.Web.WebView2.WinForms.dll"
+    $dllLoader = Join-Path $cacheDir "WebView2Loader.dll"
+
+    if (-not (Test-Path $cacheDir)) {
+        New-Item -Path $cacheDir -ItemType Directory -Force | Out-Null
+    }
+
+    if (-not (Test-Path $dllCore) -or -not (Test-Path $dllWinForms) -or -not (Test-Path $dllLoader)) {
+        Write-Host "Downloading WebView2 dependencies..." -ForegroundColor Cyan
+        $zipPath = Join-Path $cacheDir "webview2.zip"
+
+        try {
+            Invoke-WebRequest -Uri $wv2PkgUrl -OutFile $zipPath -UseBasicParsing
+
+            $tempExtract = Join-Path $cacheDir "temp_extract"
+            Expand-Archive -LiteralPath $zipPath -DestinationPath $tempExtract -Force
+
+            Copy-Item (Join-Path $tempExtract "lib\net462\Microsoft.Web.WebView2.Core.dll") $dllCore -Force
+            Copy-Item (Join-Path $tempExtract "lib\net462\Microsoft.Web.WebView2.WinForms.dll") $dllWinForms -Force
+
+            $archPath = "runtimes\win-x86\native"
+            if ([IntPtr]::Size -eq 8) {
+                $archPath = "runtimes\win-x64\native"
+            }
+            if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") {
+                $archPath = "runtimes\win-arm64\native"
+            }
+
+            Copy-Item (Join-Path $tempExtract "$archPath\WebView2Loader.dll") $dllLoader -Force
+
+            Remove-Item $tempExtract -Recurse -Force
+            Remove-Item $zipPath -Force
+        } catch {
+            Write-Warning "Failed to download WebView2 dependencies: $_"
+            return $false
+        }
+    }
+
+    try {
+        Add-Type -Path $dllCore
+        Add-Type -Path $dllWinForms
+        Add-Type -AssemblyName System.Windows.Forms
+        Add-Type -AssemblyName System.Drawing
+        return $true
+    } catch {
+        # Only warn if it's not already loaded
+        if (-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.Location -eq $dllCore })) {
+             Write-Warning "Failed to load WebView2 assemblies: $_"
+             return $false
+        }
+        return $true
+    }
+}
+
+function Show-WebView2Window {
+    param([string]$url)
+
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = "SpotFreedom - VPN Selector"
+    $form.Size = New-Object System.Drawing.Size(1000, 800)
+    $form.StartPosition = "CenterScreen"
+
+    # Try to load Spotify icon if available
+    $spotifyExe = Join-Path $env:APPDATA 'Spotify\Spotify.exe'
+    if (Test-Path $spotifyExe) {
+        try { $form.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($spotifyExe) } catch {}
+    }
+
+    $wv2 = New-Object Microsoft.Web.WebView2.WinForms.WebView2
+    $wv2.Dock = "Fill"
+
+    # Capture result
+    $script:vpnResult = $null
+
+    $wv2.add_WebMessageReceived({
+        param($sender, $e)
+        try {
+            $json = $e.TryGetWebMessageAsString()
+            if (-not [string]::IsNullOrEmpty($json)) {
+                $script:vpnResult = $json | ConvertFrom-Json
+                $form.Close()
+            }
+        } catch {
+            Write-Warning "Error processing WebView2 message: $_"
+        }
+    })
+
+    $form.Controls.Add($wv2)
+
+    # Initialize (Implicit via Source and Environment Variable)
+    try {
+        $userDataFolder = Join-Path $env:LOCALAPPDATA 'SpotFreedom\WebView2\UserData'
+        if (-not (Test-Path $userDataFolder)) { New-Item -Path $userDataFolder -ItemType Directory -Force | Out-Null }
+
+        $env:WEBVIEW2_USER_DATA_FOLDER = $userDataFolder
+        $wv2.Source = [Uri]$url
+    } catch {
+        Write-Warning "WebView2 Initialization Failed: $_"
+        $form.Close()
+        return $null
+    }
+
+    $form.ShowDialog() | Out-Null
+
+    return $script:vpnResult
+}
+
 function Show-VPNServerUI {
     $vpnHtmlPath = Join-Path $PSScriptRoot "vpn-selector.html"
     
     if (Test-Path $vpnHtmlPath) {
         Write-Host "`nLaunching VPN Server Selection UI..." -ForegroundColor Cyan
-        Write-Host "Opening VPN selector in your default browser..." -ForegroundColor Yellow
         
+        # Try WebView2 first
+        if (Load-WebView2) {
+            Write-Host "Opening VPN selector in WebView2..." -ForegroundColor Yellow
+            $result = Show-WebView2Window -url $vpnHtmlPath
+
+            if ($result) {
+                if ($result.action -eq "select") {
+                    $server = $result.server
+                    Write-Host "`n✅ Selected Server: $($server.name)" -ForegroundColor Green
+                    Write-Host "📍 Location: $($server.location)" -ForegroundColor Green
+
+                    if ($server.accessKey) {
+                        try {
+                            Set-Clipboard -Value $server.accessKey
+                            Write-Host "🔑 Access Key copied to clipboard!" -ForegroundColor Yellow
+                        } catch {
+                            Write-Warning "Could not copy to clipboard. Please copy manually."
+                        }
+                        Write-Host "   $($server.accessKey)" -ForegroundColor Gray
+                    }
+                } elseif ($result.action -eq "skip") {
+                    Write-Host "VPN setup skipped in UI." -ForegroundColor Yellow
+                }
+            } else {
+                 Write-Host "UI closed without selection." -ForegroundColor Gray
+            }
+            return $true
+        }
+
+        # Fallback to default browser
+        Write-Host "Opening VPN selector in your default browser..." -ForegroundColor Yellow
         try {
-            # Open the HTML file in default browser as an informative visual guide
             Start-Process $vpnHtmlPath
             Write-Host "`nPlease review the VPN servers in the UI that just opened." -ForegroundColor Green
             Write-Host "Copy your chosen server's access key, then return here to continue..." -ForegroundColor Yellow
