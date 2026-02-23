@@ -647,19 +647,100 @@ final_setup_check() {
 
 perlVar() {
   local A=("$@")
-  for cmd in "${A[@]}"; do
+  local files=()
+  local file_indices=()
+
+  # Group patches by file
+  for i in "${!A[@]}"; do
+    local cmd="${A[$i]}"
     IFS='&' read -r -a a <<< "${cmd}"
+
+    # Check filters
     local f="${a[4]}"
     local p="${!f}"
-    [[ ! -f "${p}" && "${debug}" && "${devMode}" && "${t}" ]] && {
-      echo -e "${red}Error:${clr} ${a[0]} invalid entry"
+
+    # Skip if file doesn't exist (only error if debug/devMode/t)
+    [[ ! -f "${p}" ]] && {
+      [[ "${debug}" && "${devMode}" && "${t}" ]] && echo -e "${red}Error:${clr} ${a[0]} invalid entry"
       continue
     }
-    { { [[ -z "${a[5]}" ]] || (( $(ver "${clientVer}") >= $(ver "${a[5]}") )); } &&
-      { [[ -z "${a[6]}" ]] || (( $(ver "${clientVer}") <= $(ver "${a[6]}") )); } &&
-      { [[ -z "${a[7]}" ]] || [[ "${a[7]}" =~ (^|\|)"${platformType}"($|\|) ]]; } &&
-      { [[ -z "${a[8]}" ]] || [[ "${a[8]}" =~ (^|\|)"${archVar}"($|\|) ]]; }
-    } && perlvar "${xpuiSpa}"
+
+    # Version/Platform Check
+    if { [[ -z "${a[5]}" ]] || (( $(ver "${clientVer}") >= $(ver "${a[5]}") )); } &&
+       { [[ -z "${a[6]}" ]] || (( $(ver "${clientVer}") <= $(ver "${a[6]}") )); } &&
+       { [[ -z "${a[7]}" ]] || [[ "${a[7]}" =~ (^|\|)"${platformType}"($|\|) ]]; } &&
+       { [[ -z "${a[8]}" ]] || [[ "${a[8]}" =~ (^|\|)"${archVar}"($|\|) ]]; }; then
+
+       # Add to file group
+       local found=0
+       for k in "${!files[@]}"; do
+         if [[ "${files[$k]}" == "$p" ]]; then
+           file_indices[$k]="${file_indices[$k]} $i"
+           found=1
+           break
+         fi
+       done
+
+       if [[ $found -eq 0 ]]; then
+         files+=("$p")
+         file_indices+=("$i")
+       fi
+    fi
+  done
+
+  # Process each file
+  for k in "${!files[@]}"; do
+    local p="${files[$k]}"
+    local idxs="${file_indices[$k]}" # space separated indices
+    local script='BEGIN { @R=(); }'
+
+    for i in $idxs; do
+        local cmd="${A[$i]}"
+        IFS='&' read -r -a a <<< "${cmd}"
+
+        # Build script part for this patch
+        # Note: We must ensure $c is reset or used correctly.
+        # $c = s&...&...&... returns count.
+        # We assume $c is local to the script (it is).
+
+        script="${script}"' $c = s&'"${a[1]}"'&'"${a[2]}"'&'"${a[3]}"'; push @R, "'"$i"'|".($c>0?1:0)."|$c";'
+    done
+
+    script="${script}"' END { print join("\n", @R); }'
+
+    # Run perl
+    local output
+    output=$($perlVar "$script" "$p")
+    local status=$?
+
+    if [[ "$status" != 0 ]]; then
+       if [[ "${debug}" && "${devMode}" && "${t}" ]]; then
+           for i in $idxs; do
+              local cmd="${A[$i]}"
+              IFS='&' read -r -a a <<< "${cmd}"
+              echo -e "${red}Error:${clr} ${a[0]} invalid entry (batch execution failed)"
+           done
+       fi
+       continue
+    fi
+
+    # Parse output lines
+    # Using while loop with <<< string
+    while IFS='|' read -r idx m c; do
+       if [[ -n "$idx" ]]; then
+           local cmd="${A[$idx]}"
+           IFS='&' read -r -a a <<< "${cmd}"
+
+           if [[ "${m}" == 0 && "${debug}" && "${devMode}" && "${t}" ]]; then
+               echo -e "${yellow}Warning:${clr} ${a[0]} missing"
+           fi
+
+           if [[ "${a[9]}" && "${c}" != "${a[9]}" && "${debug}" && "${devMode}" && "${t}" ]]; then
+               echo -e "${yellow}Warning:${clr} ${a[0]} ${a[9]}, ${c}"
+           fi
+       fi
+    done <<< "$output"
+
   done
 }
 
