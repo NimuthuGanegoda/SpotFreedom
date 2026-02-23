@@ -147,6 +147,156 @@ $xpuiSpa = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.spa'
 $xpuiBak = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.bak'
 $start_menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Spotify.lnk'
 
+function Ensure-WebView2Dependencies {
+    $wv2Dir = Join-Path $env:LOCALAPPDATA 'SpotFreedom\WebView2'
+    if (-not (Test-Path $wv2Dir)) {
+        New-Item -Path $wv2Dir -ItemType Directory -Force | Out-Null
+    }
+
+    $coreDll = Join-Path $wv2Dir 'Microsoft.Web.WebView2.Core.dll'
+    $winFormsDll = Join-Path $wv2Dir 'Microsoft.Web.WebView2.WinForms.dll'
+    $loaderDll = Join-Path $wv2Dir 'WebView2Loader.dll'
+
+    if ((Test-Path $coreDll) -and (Test-Path $winFormsDll) -and (Test-Path $loaderDll)) {
+        return $true
+    }
+
+    Write-Host "Downloading WebView2 dependencies..." -ForegroundColor Cyan
+    $url = 'https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2/1.0.2903.40'
+    $zipPath = Join-Path $wv2Dir 'webview2_pkg.zip'
+
+    try {
+        Invoke-WebRequest -Uri $url -OutFile $zipPath -UseBasicParsing
+
+        $tempExtract = Join-Path $wv2Dir 'temp_extract'
+        Expand-Archive -LiteralPath $zipPath -DestinationPath $tempExtract -Force
+
+        # Move .NET DLLs
+        Copy-Item (Join-Path $tempExtract 'lib\net45\Microsoft.Web.WebView2.Core.dll') $coreDll -Force
+        Copy-Item (Join-Path $tempExtract 'lib\net45\Microsoft.Web.WebView2.WinForms.dll') $winFormsDll -Force
+
+        # Move Native Loader
+        $arch = $env:PROCESSOR_ARCHITECTURE
+        $wv2Arch = 'win-x86'
+        if ($arch -eq 'AMD64') { $wv2Arch = 'win-x64' }
+        elseif ($arch -eq 'ARM64') { $wv2Arch = 'win-arm64' }
+
+        $loaderPath = Join-Path $tempExtract "runtimes\$wv2Arch\native\WebView2Loader.dll"
+        if (Test-Path $loaderPath) {
+            Copy-Item $loaderPath $loaderDll -Force
+        } else {
+            throw "WebView2Loader.dll not found for architecture $wv2Arch"
+        }
+
+        # Cleanup
+        Remove-Item $tempExtract -Recurse -Force -ErrorAction SilentlyContinue
+        Remove-Item $zipPath -Force -ErrorAction SilentlyContinue
+
+        Write-Host "WebView2 dependencies installed." -ForegroundColor Green
+        return $true
+    } catch {
+        Write-Warning "Failed to download/install WebView2 dependencies: $_"
+        # Cleanup on failure
+        if (Test-Path $tempExtract) { Remove-Item $tempExtract -Recurse -Force -ErrorAction SilentlyContinue }
+        if (Test-Path $zipPath) { Remove-Item $zipPath -Force -ErrorAction SilentlyContinue }
+        return $false
+    }
+}
+
+function Show-WebView2Window {
+    param([string]$Url)
+
+    if (-not (Ensure-WebView2Dependencies)) {
+        return $null
+    }
+
+    $wv2Dir = Join-Path $env:LOCALAPPDATA 'SpotFreedom\WebView2'
+    $coreDll = Join-Path $wv2Dir 'Microsoft.Web.WebView2.Core.dll'
+    $winFormsDll = Join-Path $wv2Dir 'Microsoft.Web.WebView2.WinForms.dll'
+
+    # Load Assemblies
+    try {
+        Add-Type -Path $coreDll -ErrorAction SilentlyContinue
+        Add-Type -Path $winFormsDll -ErrorAction SilentlyContinue
+        Add-Type -AssemblyName System.Windows.Forms
+        Add-Type -AssemblyName System.Drawing
+    } catch {
+        Write-Warning "Failed to load WebView2 assemblies: $_"
+        return $null
+    }
+
+    # Setup Form
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = "SpotFreedom VPN Selector"
+    $form.Size = New-Object System.Drawing.Size(950, 750)
+    $form.StartPosition = "CenterScreen"
+    $form.FormBorderStyle = "FixedDialog"
+    $form.MaximizeBox = $false
+    $form.MinimizeBox = $false
+
+    # Icon (optional, try to use Spotify icon if possible, but default is fine)
+
+    # Setup WebView2 Control
+    $webView = New-Object Microsoft.Web.WebView2.WinForms.WebView2
+    $webView.Dock = "Fill"
+    $form.Controls.Add($webView)
+
+    # Initialize WebView2 Environment
+    # Use a temp user data folder to ensure isolation and avoid permission issues
+    $userDataFolder = Join-Path $env:TEMP "SpotFreedom_WebView2_Data_$(Get-Random)"
+    if (-not (Test-Path $userDataFolder)) { New-Item -Path $userDataFolder -ItemType Directory -Force | Out-Null }
+
+    # Add wv2Dir to PATH so WebView2Loader.dll can be found
+    $env:PATH = "$wv2Dir;$env:PATH"
+
+    try {
+        # Create Environment
+        $envTask = [Microsoft.Web.WebView2.Core.CoreWebView2Environment]::CreateAsync($null, $userDataFolder, $null)
+        $envTask.Wait()
+        $wv2Env = $envTask.Result
+
+        # Initialize Control
+        $initTask = $webView.EnsureCoreWebView2Async($wv2Env)
+        $initTask.Wait()
+    } catch {
+        Write-Warning "Failed to initialize WebView2 Runtime. Is Edge/WebView2 Runtime installed?"
+        Write-Warning "Error: $_"
+        $form.Dispose()
+        return $null
+    }
+
+    # Setup Communication
+    $selectionResult = @{ Value = $null }
+
+    $webView.add_WebMessageReceived({
+        param($sender, $e)
+        try {
+            $json = $e.TryGetWebMessageAsString()
+            $data = $json | ConvertFrom-Json
+            $selectionResult.Value = $data
+            $form.Close()
+        } catch {
+            Write-Warning "Error parsing message from UI: $_"
+        }
+    })
+
+    # Disable Context Menu and DevTools for cleaner experience (optional, but good)
+    $webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = $false
+    $webView.CoreWebView2.Settings.AreDevToolsEnabled = $false
+
+    # Navigate
+    $webView.Source = [Uri]$Url
+
+    # Show Dialog
+    $form.ShowDialog() | Out-Null
+
+    # Cleanup
+    $form.Dispose()
+    try { Remove-Item $userDataFolder -Recurse -Force -ErrorAction SilentlyContinue } catch {}
+
+    return $selectionResult.Value
+}
+
 # Function to show VPN Server Selection UI
 # This launches an interactive HTML UI to help users browse and select VPN servers
 # The UI is informative and displays all available servers from vpnbook.com
@@ -156,8 +306,29 @@ function Show-VPNServerUI {
     
     if (Test-Path $vpnHtmlPath) {
         Write-Host "`nLaunching VPN Server Selection UI..." -ForegroundColor Cyan
-        Write-Host "Opening VPN selector in your default browser..." -ForegroundColor Yellow
         
+        # Attempt to use WebView2 for integrated experience
+        try {
+            $selection = Show-WebView2Window -Url $vpnHtmlPath
+            if ($selection) {
+                if ($selection.action -eq 'skip') {
+                    Write-Host "VPN setup skipped by user." -ForegroundColor Yellow
+                    return $null
+                }
+                elseif ($selection.action -eq 'select') {
+                    return $selection
+                }
+            }
+            # If window closed without selection, treat as cancel/skip or fallback?
+            # Let's assume user closed it because they want to cancel or do it manually.
+            # But maybe we should return null to indicate no selection.
+        }
+        catch {
+            Write-Warning "WebView2 launch failed, falling back to browser: $_"
+        }
+
+        # Fallback: Open in default browser
+        Write-Host "Opening VPN selector in your default browser..." -ForegroundColor Yellow
         try {
             # Open the HTML file in default browser as an informative visual guide
             Start-Process $vpnHtmlPath
@@ -190,28 +361,43 @@ if (-not $no_vpn) {
         Write-Host "================================================" -ForegroundColor Cyan
         
         # Try to show the UI first
-        $uiLaunched = Show-VPNServerUI
+        $uiResult = Show-VPNServerUI
         
-        if ($uiLaunched) {
+        if ($uiResult -and $uiResult.server) {
+            Write-Host "`n✅ Selected Server: $($uiResult.server.name)" -ForegroundColor Green
+            Write-Host "   Location: $($uiResult.server.location)" -ForegroundColor Gray
+            if ($uiResult.port) {
+                $ProxyPort = $uiResult.port
+                Write-Host "   Using Local Port: $ProxyPort" -ForegroundColor Green
+            }
+        }
+        elseif ($uiResult -eq $true) {
             Write-Host "`n🌐 Available VPN Servers from VPNBook.com:" -ForegroundColor Green
         }
         else {
-            Write-Host "`nFalling back to text-based selection..." -ForegroundColor Yellow
+            # UI failed, skipped, or cancelled
+            if ($uiResult -eq $null) {
+                Write-Host "VPN setup skipped or cancelled in UI." -ForegroundColor Gray
+            } else {
+                Write-Host "`nFalling back to text-based selection..." -ForegroundColor Yellow
+            }
         }
         
-        Write-Host "`nOutline/Shadowsocks Servers (Recommended):" -ForegroundColor Cyan
-        Write-Host "  Poland Server 1: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl134.vpnbook.com:443/?outline=1" -ForegroundColor White
-        Write-Host "  Poland Server 2: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl140.vpnbook.com:443/?outline=1" -ForegroundColor White
-        Write-Host "  Canada Server 3: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@ca225.vpnbook.com:443/?outline=1" -ForegroundColor White
+        if (-not $ProxyPort) {
+            Write-Host "`nOutline/Shadowsocks Servers (Recommended):" -ForegroundColor Cyan
+            Write-Host "  Poland Server 1: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl134.vpnbook.com:443/?outline=1" -ForegroundColor White
+            Write-Host "  Poland Server 2: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@pl140.vpnbook.com:443/?outline=1" -ForegroundColor White
+            Write-Host "  Canada Server 3: ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpwdmd6OXBx@ca225.vpnbook.com:443/?outline=1" -ForegroundColor White
 
-        Write-Host "`nOpenVPN/WireGuard Servers (Requires separate client):" -ForegroundColor Gray
-        Write-Host "  US: US16, US178 | Canada: CA149, CA196" -ForegroundColor Gray
-        Write-Host "  UK: UK205, UK68 | Germany: DE20, DE220 | France: FR200, FR231" -ForegroundColor Gray
-        Write-Host "  Get credentials at: https://www.vpnbook.com/freevpn" -ForegroundColor Gray
+            Write-Host "`nOpenVPN/WireGuard Servers (Requires separate client):" -ForegroundColor Gray
+            Write-Host "  US: US16, US178 | Canada: CA149, CA196" -ForegroundColor Gray
+            Write-Host "  UK: UK205, UK68 | Germany: DE20, DE220 | France: FR200, FR231" -ForegroundColor Gray
+            Write-Host "  Get credentials at: https://www.vpnbook.com/freevpn" -ForegroundColor Gray
 
-        Write-Host "`n📝 Enter the local SOCKS5 port from your Outline Client" -ForegroundColor Yellow
-        Write-Host "   (Leave empty to skip proxy setup)" -ForegroundColor Gray
-        $ProxyPort = Read-Host "Port"
+            Write-Host "`n📝 Enter the local SOCKS5 port from your Outline Client" -ForegroundColor Yellow
+            Write-Host "   (Leave empty to skip proxy setup)" -ForegroundColor Gray
+            $ProxyPort = Read-Host "Port"
+        }
     }
 }
 

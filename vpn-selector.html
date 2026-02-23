@@ -259,6 +259,11 @@
             <div id="accessKeySection" style="display: none;">
                 <p><strong>Outline Access Key:</strong></p>
                 <div class="access-key" id="accessKey"></div>
+
+                <div style="margin-top: 15px;">
+                    <p><strong>Local SOCKS5 Port (from Outline Client):</strong></p>
+                    <input type="number" id="socksPort" placeholder="e.g. 1080" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
             </div>
         </div>
 
@@ -353,6 +358,9 @@
             document.getElementById('selectedLocation').textContent = server.location;
             
             const accessKeySection = document.getElementById('accessKeySection');
+            const portInput = document.getElementById('socksPort');
+            if (portInput) portInput.value = ''; // Clear previous port
+
             if (server.accessKey) {
                 document.getElementById('accessKey').textContent = server.accessKey;
                 accessKeySection.style.display = 'block';
@@ -374,10 +382,14 @@
         function confirmSelection() {
             if (!selectedServer) return;
 
+            const portInput = document.getElementById('socksPort');
+            const port = portInput ? portInput.value : '';
+
             // Create result object
             const result = {
                 action: 'select',
-                server: selectedServer
+                server: selectedServer,
+                port: port
             };
 
             // Try to communicate with PowerShell (works only if opened in WebView2)
