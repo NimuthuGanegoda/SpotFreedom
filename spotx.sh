@@ -647,19 +647,116 @@ final_setup_check() {
 
 perlVar() {
   local A=("$@")
-  for cmd in "${A[@]}"; do
+  local files=()
+  local file_indices=()
+  local i
+  local cmd
+  local a
+  local f
+  local p
+  local valid_entry
+  local found_idx
+  local j
+
+  # 1. Group by file
+  for ((i=0; i<${#A[@]}; i++)); do
+    cmd="${A[$i]}"
     IFS='&' read -r -a a <<< "${cmd}"
-    local f="${a[4]}"
-    local p="${!f}"
+
+    # Filter logic
+    valid_entry=true
+    local file_var="${a[4]}"
+    p="${!file_var}"
+
     [[ ! -f "${p}" && "${debug}" && "${devMode}" && "${t}" ]] && {
       echo -e "${red}Error:${clr} ${a[0]} invalid entry"
-      continue
+      valid_entry=false
     }
-    { { [[ -z "${a[5]}" ]] || (( $(ver "${clientVer}") >= $(ver "${a[5]}") )); } &&
-      { [[ -z "${a[6]}" ]] || (( $(ver "${clientVer}") <= $(ver "${a[6]}") )); } &&
-      { [[ -z "${a[7]}" ]] || [[ "${a[7]}" =~ (^|\|)"${platformType}"($|\|) ]]; } &&
-      { [[ -z "${a[8]}" ]] || [[ "${a[8]}" =~ (^|\|)"${archVar}"($|\|) ]]; }
-    } && perlvar "${xpuiSpa}"
+
+    if $valid_entry; then
+        if { [[ -z "${a[5]}" ]] || (( $(ver "${clientVer}") >= $(ver "${a[5]}") )); } &&
+           { [[ -z "${a[6]}" ]] || (( $(ver "${clientVer}") <= $(ver "${a[6]}") )); } &&
+           { [[ -z "${a[7]}" ]] || [[ "${a[7]}" =~ (^|\|)"${platformType}"($|\|) ]]; } &&
+           { [[ -z "${a[8]}" ]] || [[ "${a[8]}" =~ (^|\|)"${archVar}"($|\|) ]]; }; then
+
+           # Find p in files
+           found_idx=-1
+           for ((j=0; j<${#files[@]}; j++)); do
+               if [[ "${files[$j]}" == "$p" ]]; then
+                   found_idx=$j
+                   break
+               fi
+           done
+
+           if [[ $found_idx -eq -1 ]]; then
+               files+=("$p")
+               file_indices+=("$i")
+           else
+               file_indices[$found_idx]="${file_indices[$found_idx]} $i"
+           fi
+        fi
+    fi
+  done
+
+  # 2. Execute per file
+  for ((j=0; j<${#files[@]}; j++)); do
+      p="${files[$j]}"
+      idxs="${file_indices[$j]}"
+
+      # Generate temp file
+      local tmp_pl
+      tmp_pl=$(mktemp)
+
+      # Write header
+      echo 'BEGIN { open(REP, ">&STDOUT"); @res=(); }' > "$tmp_pl"
+
+      local idx_list=($idxs)
+      for i in "${idx_list[@]}"; do
+          cmd="${A[$i]}"
+          IFS='&' read -r -a a <<< "${cmd}"
+
+          # Append to file
+          # We use printf to safely insert regex/replace strings into the perl script
+          printf '$c=s&%s&%s&%s; push(@res, "%s|".($c>0?1:0)."|$c");\n' "${a[1]}" "${a[2]}" "${a[3]}" "${a[0]}" >> "$tmp_pl"
+      done
+
+      echo 'END { print REP join("\n", @res); }' >> "$tmp_pl"
+
+      # Run perl
+      # Use the flags from $perlVar but replace -e with the file
+      local perl_flags="${perlVar/-e/}"
+      local output
+      output=$($perl_flags "$tmp_pl" "$p")
+      local s=$?
+
+      rm "$tmp_pl"
+
+      if [[ $s -ne 0 ]]; then
+         [[ "${debug}" && "${devMode}" && "${t}" ]] && echo -e "${red}Error:${clr} Batch patch failed for $p"
+         continue
+      fi
+
+      local line_idx=0
+
+      while IFS= read -r line; do
+          if [[ -z "$line" ]]; then continue; fi
+
+          # Parse line: name|m|c
+          IFS='|' read -r name m c <<< "$line"
+
+          # Get corresponding a[9] (expected count) from the original entry
+          local original_idx=${idx_list[$line_idx]}
+          local original_cmd="${A[$original_idx]}"
+          IFS='&' read -r -a a_orig <<< "${original_cmd}"
+
+          # Validation
+           { { [[ "${m}" == 0 && "${debug}" && "${devMode}" && "${t}" ]] && echo -e "${yellow}Warning:${clr} ${name} missing"; } ||
+             { [[ "${a_orig[9]}" && "${c}" != "${a_orig[9]}" && "${debug}" && "${devMode}" && "${t}" ]] && echo -e "${yellow}Warning:${clr} ${name} ${a_orig[9]}, ${c}"; }
+           }
+
+           ((line_idx++))
+      done <<< "$output"
+
   done
 }
 
