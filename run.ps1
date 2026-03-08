@@ -290,7 +290,7 @@ function Install-BlockTheSpot {
     }
 
     # Cache Configuration
-    $cacheDir = Join-Path $env:LOCALAPPDATA 'SpotFreedom'
+    $cacheDir = Join-Path $env:LOCALAPPDATA 'SpotX'
     if (-not (Test-Path $cacheDir)) {
         New-Item -Path $cacheDir -ItemType Directory -Force | Out-Null
     }
@@ -393,7 +393,7 @@ function Get-LatestSpotifyVersion {
     
     $updateUrl = 'https://loadspot.pages.dev/'
     $tempPath = if ($env:TEMP) { $env:TEMP } else { [System.IO.Path]::GetTempPath() }
-    $cacheFile = Join-Path $tempPath 'spotfreedom_version_cache.txt'
+    $cacheFile = Join-Path $tempPath 'spotx_version_cache.txt'
     $cacheAge = 3600 # Cache for 1 hour
     
     try {
@@ -840,7 +840,7 @@ function Patch-XPUI ($patchesJson) {
     }
 
     # Extract
-    $tempDir = Join-Path $env:TEMP "SpotFreedom_Temp_$(Get-Random)"
+    $tempDir = Join-Path $env:TEMP "SpotX_Temp_$(Get-Random)"
     New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
 
     try {

@@ -21,21 +21,21 @@ show_help() {
 -c, --clearcache       : clear client app cache
 -d, --devmode          : enable developer mode
 -e, --noexp            : exclude all experimental features
--f, --force            : force SpotFreedom to run
+-f, --force            : force SpotX to run
 -h, --hide             : hide non-music on home screen
 --help                 : print this help message
 -i, --interactive      : enable interactive mode
 --installdeb           : install latest client deb pkg on APT-based distros [Linux]
 --installmac           : install latest supported client version [macOS]
 -l, --lyricsbg         : set lyrics background color to black
---nocolor              : remove colors from SpotFreedom output
+--nocolor              : remove colors from SpotX output
 -o, --oldui            : use old home screen UI
 -p, --premium          : paid premium-tier subscriber
 -P <path>              : set path to client
 -S, --skipcodesign     : skip codesigning [macOS]
 --stable               : use with '--installdeb' for stable branch [Linux]
---uninstall            : uninstall SpotFreedom
--v, --version          : print SpotFreedom version
+--uninstall            : uninstall SpotX
+-v, --version          : print SpotX version
 -V <version>           : install specific client version [macOS]
 "
 }
@@ -110,9 +110,9 @@ ver_check() { (($(ver "${sxbVer}") > $(ver "1.1.0.0") && $(ver "${sxbVer}") < $(
 check_loadspot_version() {
   # Check for latest Spotify version from loadspot.pages.dev
   # Use XDG_CACHE_HOME if available, otherwise fall back to $HOME/.cache or /tmp
-  local cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/spotfreedom"
+  local cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/spotx"
   [[ ! -d "$cache_dir" ]] && mkdir -p "$cache_dir" 2>/dev/null || cache_dir="/tmp"
-  local cache_file="${cache_dir}/spotfreedom_version_cache.txt"
+  local cache_file="${cache_dir}/spotx_version_cache.txt"
   local cache_age=3600  # 1 hour in seconds
   local update_url="https://loadspot.pages.dev/"
   
@@ -175,7 +175,7 @@ check_loadspot_version() {
   return 1
 }
 
-[[ "${verPrint}" ]] && { echo -e "SpotFreedom version ${sxbVer}\n"; ver_check; exit 0; }
+[[ "${verPrint}" ]] && { echo -e "SpotX version ${sxbVer}\n"; ver_check; exit 0; }
 
 echo
 echo "  ____             _   _____                    _                  "
@@ -868,7 +868,7 @@ lyricsBgEx=(
 'lyricsBackground4&--lyrics-color-background":\K(.\.colors).background&$1.text&&xpuiJs&1.2.0.1165&1.2.44.405'
 )
 aoEx=(
-'aboutSpotX&((..createElement|children:\(.{1,7}\))\(.{1,7},\{source:).{1,7}get\("about.copyright",.\),paragraphClassName:.(?=\}\))&$1"<h3>About SpotFreedom</h3><br><details><summary><svg xmlns='\''http://www.w3.org/2000/svg'\'' width='\''20'\'' height='\''20'\'' viewBox='\''0 0 24 24'\''><path d='\''M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z'\'' fill='\''#fff'\''/></svg> Github</summary><a href='\''https://github.com/NimuthuGanegoda/SpotFreedom'\''>SpotFreedom</a><br><br/></details><br><h4>DISCLAIMER</h4>SpotFreedom is a modified version of the official Spotify\x26reg; client, provided \x26quot;as is\x26quot; for the purpose of evaluation at user'\''s own risk. Source code for SpotFreedom is available separately and free of charge under open source software license agreements. SpotFreedom is not affiliated with Spotify\x26reg;, Spotify AB or Spotify Group.<br><br>Spotify\x26reg; is a registered trademark of Spotify Group."&&xpuiDesktopModalsJs&1.1.79.763'
+'aboutSpotX&((..createElement|children:\(.{1,7}\))\(.{1,7},\{source:).{1,7}get\("about.copyright",.\),paragraphClassName:.(?=\}\))&$1"<h3>About SpotX</h3><br><details><summary><svg xmlns='\''http://www.w3.org/2000/svg'\'' width='\''20'\'' height='\''20'\'' viewBox='\''0 0 24 24'\''><path d='\''M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z'\'' fill='\''#fff'\''/></svg> Github</summary><a href='\''https://github.com/SpotX-Official/SpotX'\''>SpotX</a><br><br/></details><br><h4>DISCLAIMER</h4>SpotX is a modified version of the official Spotify\x26reg; client, provided \x26quot;as is\x26quot; for the purpose of evaluation at user'\''s own risk. Source code for SpotX is available separately and free of charge under open source software license agreements. SpotX is not affiliated with Spotify\x26reg;, Spotify AB or Spotify Group.<br><br>Spotify\x26reg; is a registered trademark of Spotify Group."&&xpuiDesktopModalsJs&1.1.79.763'
 'allowSwitchingBetweenHomeAdsAndHpto&opposed to only showing the legacy HPTO format.",default:\K!.(?=})&false&s&xpuiJs&1.2.34.783'
 'betamaxFilterNegativeDuration&for duration that is negative",default:\K!.(?=})&false&s&xpuiJs'
 'bGabo&\x00\K\x67(?=\x61\x62\x6F\x2D\x72\x65\x63\x65\x69\x76\x65\x72\x2D\x73\x65\x72\x76\x69\x63\x65\x2F\x70)&\x00&g&appBinary&1.1.84.716'

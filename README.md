@@ -1,22 +1,22 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/SpotFreedom-Spotify_Patcher-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="SpotFreedom"/>
+  <img src="https://img.shields.io/badge/SpotX-Spotify_Patcher-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="SpotX"/>
 </p>
 
 <p align="center">
-  <a href="https://github.com/NimuthuGanegoda/SpotFreedom"><img src="https://img.shields.io/badge/SpotFreedom-Repository-blue"></a>
-  <a href="https://github.com/NimuthuGanegoda/SpotFreedom/releases"><img src="https://img.shields.io/badge/Releases-Latest-green"></a>
+  <a href="https://github.com/SpotX-Official/SpotX"><img src="https://img.shields.io/badge/SpotX-Repository-blue"></a>
+  <a href="https://github.com/SpotX-Official/SpotX/releases"><img src="https://img.shields.io/badge/Releases-Latest-green"></a>
   <a href="https://telegra.ph/SpotX-FAQ-09-19"><img src="https://img.shields.io/badge/FAQ-Read-orange"></a>
 </p>
 
 <h2>
   <div align="center">
-    <b>SpotFreedom - Patcher for Spotify Desktop Client</b>
+    <b>SpotX - Patcher for Spotify Desktop Client</b>
   </div>
 </h2>
 
 <p align="center"> •
   <a href="#requirements">Requirements</a> •
-  <a href="#perks">Why SpotFreedom?</a> •
+  <a href="#perks">Why SpotX?</a> •
   <a href="#features">Features</a> •
   <a href="#installation--update">Installation</a> •
   <a href="#uninstall">Uninstall</a> •
@@ -32,16 +32,16 @@
 - **Bash Shell:** Required for Linux and macOS installations
 - **Internet Connection:** Required for installation and updates
 
-<h1 id="perks">Why SpotFreedom?</h1>
+<h1 id="perks">Why SpotX?</h1>
 
-SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its core ad-blocking technology, with exclusive features designed for advanced users:
+SpotX uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its core ad-blocking technology, with exclusive features designed for advanced users:
 
 - **🚫 BlockTheSpot Integration:** Uses the proven DLL injection method from BlockTheSpot for superior ad-blocking.
 - **🔄 Automatic Update Checking:** Verifies the latest Spotify version from loadspot.pages.dev to ensure patches remain compatible.
 - **🌍 Built-in Proxy/VPN Support:** Easily configure proxies to bypass geo-restrictions directly via installation parameters (Windows only).
 - **🎨 Seamless Spicetify Integration:** Automatically install or update Spicetify alongside your patches with the simple `-spicetify` switch (Windows only).
 - **🛡️ Enhanced Stability:** Uses local patching methods to reduce reliance on external servers for patch data.
-- **🧹 Auto-Cleanup:** Automatically manages and cleans up temporary files (`SpotFreedom_Temp`) for a cleaner system.
+- **🧹 Auto-Cleanup:** Automatically manages and cleans up temporary files (`SpotX_Temp`) for a cleaner system.
 
 <h1 id="features">Features</h1>
 
@@ -72,14 +72,14 @@ SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its co
 
   <h4> </h4>
 
-#### Just download and run [Install_New_theme.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Install_New_theme.bat)
+#### Just download and run [Install_New_theme.bat](https://raw.githack.com/SpotX-Official/SpotX/main/Install_New_theme.bat)
 
 or
 
 #### Run the following command in PowerShell:
 
 ```ps1
-iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -new_theme"
+iex "& { $(irm 'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1') } -new_theme"
 ```
 
 </details>
@@ -96,14 +96,14 @@ iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/ma
 
   <h4> </h4>
 
-#### Just download and run [Install_Old_theme.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Install_Old_theme.bat)
+#### Just download and run [Install_Old_theme.bat](https://raw.githack.com/SpotX-Official/SpotX/main/Install_Old_theme.bat)
 
 or
 
 #### Run the following command in PowerShell:
 
 ```ps1
-iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -v 1.2.13.661.ga588f749-4064 -confirm_spoti_recomended_over -block_update_on"
+iex "& { $(irm 'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1') } -v 1.2.13.661.ga588f749-4064 -confirm_spoti_recomended_over -block_update_on"
 ```
 
 </details>
@@ -125,14 +125,14 @@ iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/ma
 
 <h4> </h4>
 
-#### Just download and run [Install_Auto.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/scripts/Install_Auto.bat)
+#### Just download and run [Install_Auto.bat](https://raw.githack.com/SpotX-Official/SpotX/main/scripts/Install_Auto.bat)
 
 or
 
 #### Run the following command in PowerShell:
 
 ```ps1
-iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"
+iex "& { $(irm 'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1') } -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"
 ```
 
 </details>
@@ -151,14 +151,14 @@ iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/ma
 
   <h4> </h4>
 
-#### Just download and run [Install_Prem.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/scripts/Install_Prem.bat)
+#### Just download and run [Install_Prem.bat](https://raw.githack.com/SpotX-Official/SpotX/main/scripts/Install_Prem.bat)
 
 or
 
 #### Run the following command in PowerShell:
 
 ```ps1
-iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -premium -new_theme"
+iex "& { $(irm 'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1') } -premium -new_theme"
 ```
 
 </details>
@@ -195,13 +195,13 @@ You can specify various parameters for a more flexible installation, more [detai
 #### Run the following command in PowerShell (Interactive mode with VPN prompt):
 
 ```ps1
-iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') }"
+iex "& { $(irm 'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1') }"
 ```
 
 #### To skip VPN configuration prompt:
 
 ```ps1
-iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -no_vpn"
+iex "& { $(irm 'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1') } -no_vpn"
 ```
 
 </details>
@@ -218,7 +218,7 @@ iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/ma
 
 <h1 id="uninstall">Uninstall</h1>
 
-- Just run [Uninstall.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Uninstall.bat)
+- Just run [Uninstall.bat](https://raw.githack.com/SpotX-Official/SpotX/main/Uninstall.bat)
 
 or
 
@@ -230,4 +230,4 @@ or
 
 <h1 id="disclaimer">Disclaimer</h1>
 
-SpotFreedom is a tool that modifies the official Spotify client, provided as an evaluation version — use it at your own risk.
+SpotX is a tool that modifies the official Spotify client, provided as an evaluation version — use it at your own risk.
