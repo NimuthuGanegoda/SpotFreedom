@@ -43,10 +43,10 @@ Download the latest installers for your platform from the [Releases page](https:
 
 | Platform | Download Link |
 | :--- | :--- |
-| **🐧 Linux (x86_64)** | [Download](https://github.com/skyline69/spotix/releases/latest/download/spotix-linux-x86_64) |
-| **🐧 Debian/Ubuntu** | [Download (.deb)](https://github.com/skyline69/spotix/releases/latest/download/spotix-amd64.deb) |
-| **🍎 macOS** | [Download (.dmg)](https://github.com/skyline69/spotix/releases/latest/download/Spotix.dmg) |
-| **🪟 Windows** | [Download (.exe)](https://github.com/skyline69/spotix/releases/latest/download/Spotix.exe) |
+| **🐧 Linux (x86_64)** | [Download](https://github.com/NimuthuGanegoda/SpotFreedom/releases/download/rolling/spotix-linux-x86_64) |
+| **🐧 Debian/Ubuntu** | [Download (.deb)](https://github.com/NimuthuGanegoda/SpotFreedom/releases/download/rolling/spotix-amd64.deb) |
+| **🍎 macOS** | [Download (.dmg)](https://github.com/NimuthuGanegoda/SpotFreedom/releases/download/rolling/Spotix.dmg) |
+| **🪟 Windows** | [Download (.exe)](https://github.com/NimuthuGanegoda/SpotFreedom/releases/download/rolling/Spotix.exe) |
 
 #### Build from Source (Rust)
 ```bash
