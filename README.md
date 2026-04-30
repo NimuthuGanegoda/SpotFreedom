@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/SpotFreedom-Spotify_Patcher-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="SpotFreedom"/>
+  <img src="https://img.shields.io/badge/SpotFreedom-Spotify_%26_YT_Music_Patcher-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="SpotFreedom"/>
 </p>
 
 <p align="center">
@@ -8,190 +8,146 @@
   <a href="https://github.com/NimuthuGanegoda/SpotFreedom#faq"><img src="https://img.shields.io/badge/FAQ-Read-orange"></a>
 </p>
 
-<h2>
-  <div align="center">
-    <b>SpotFreedom - Patcher for Spotify Desktop Client</b>
-  </div>
-</h2>
-
-<p align="center"> •
-  <a href="#requirements">Requirements</a> •
-  <a href="#perks">Why SpotFreedom?</a> •
-  <a href="#features">Features</a> •
-  <a href="#installation--update">Installation</a> •
-  <a href="#uninstall">Uninstall</a> •
-  <a href="#faq">FAQ</a> •
-  <a href="#disclaimer">Disclaimer</a>
+<h1 align="center">🎵 SpotFreedom 🚀</h1>
+<p align="center">
+  <b>The Ultimate Patcher for Spotify & YouTube Music Desktop Clients</b>
 </p>
 
-<h1 id="requirements">Requirements</h1>
+<p align="center">
+  Enjoy a seamless, ad-free, and highly customizable music experience on your desktop. SpotFreedom bridges the gap between official clients and premium features, giving you total control over your music.
+</p>
 
-- **Operating System:** Windows 7 or later / Linux / macOS
-- **Spotify Client:** [Official Spotify Desktop Application](https://loadspot.pages.dev) (Microsoft Store version not supported)
-- **PowerShell:** Version 5.1 or higher (Windows only)
-- **Bash Shell:** Required for Linux and macOS installations
-- **Internet Connection:** Required for installation and updates
+<p align="center"> •
+  <a href="#requirements">📋 Requirements</a> •
+  <a href="#perks">✨ Why SpotFreedom?</a> •
+  <a href="#features">🔥 Features</a> •
+  <a href="#installation--update">💻 Spotify Install</a> •
+  <a href="#ytm-installation">📺 YTM Install</a> •
+  <a href="#uninstall">🗑️ Uninstall</a> •
+  <a href="#faq">❓ FAQ</a> •
+  <a href="#disclaimer">⚖️ Disclaimer</a>
+</p>
 
-<h1 id="perks">Why SpotFreedom?</h1>
+---
 
-SpotFreedom uses BlockTheSpot (https://github.com/mrpond/BlockTheSpot) as its core ad-blocking technology, with exclusive features designed for advanced users:
+<h2 id="requirements">📋 Requirements</h2>
 
-- **🚫 BlockTheSpot Integration:** Uses the proven DLL injection method from BlockTheSpot for superior ad-blocking.
-- **🔄 Automatic Update Checking:** Verifies the latest Spotify version from loadspot.pages.dev to ensure patches remain compatible.
-- **🌍 Built-in Proxy Support:** Configure Spotify to use a proxy via installation parameters (Windows only).
-- **🎨 Seamless Spicetify Integration:** Automatically install or update Spicetify alongside your patches with the simple `-spicetify` switch (Windows only).
-- **🛡️ Enhanced Stability:** Uses local patching methods to reduce reliance on external servers for patch data.
-- **🧹 Auto-Cleanup:** Automatically manages and cleans up temporary files (`SpotFreedom_Temp`) for a cleaner system.
+- **🖥️ Operating System:** Windows 7 or later / Linux / macOS
+- **🎧 Spotify Client:** [Official Spotify Desktop Application](https://loadspot.pages.dev) (Microsoft Store version NOT supported)
+- **🎶 YouTube Music:** [th-ch/youtube-music](https://github.com/th-ch/youtube-music) (Supported via integrated script)
+- **🐚 Shells:** PowerShell 5.1+ (Windows) or Bash (Linux/macOS)
+- **🌐 Internet:** Required for initial installation and periodic updates
 
-<h1 id="features">Features</h1>
+---
 
-- **Blocks all banner, video, and audio ads** in the client
-- **Hiding podcasts, episodes, and audiobooks** from the homepage (optional)
-- **Block Spotify automatic updates** (optional)
-- **Automatic version checking** from loadspot.pages.dev to ensure compatibility with the latest Spotify version
-- **Built-in Proxy Support** (Windows only)
-- **Spicetify Integration** (Windows only)
-- **BlockTheSpot Integration** (Enabled by default, uses DLL injection from https://github.com/mrpond/BlockTheSpot)
-- **Some native experimental features have been changed**
-- **Advanced installation parameters** via `run.ps1` switches
+<h2 id="perks">✨ Why SpotFreedom?</h2>
 
-> **Note on BlockTheSpot:**
-> BlockTheSpot (DLL Injection) is now **enabled by default** as the primary ad-blocking method. This provides enhanced ad-blocking capabilities using the proven approach from https://github.com/mrpond/BlockTheSpot. If you experience issues or prefer the native binary patching method instead, you can disable BlockTheSpot by running the installer with the `-no_bts` parameter.
->
-> **Automatic Updates:** This repository is automatically monitored for BlockTheSpot updates. When a new version is released, a pull request is automatically created to track the update.
+SpotFreedom provides a unified, professional-grade experience for the world's leading music platforms:
 
-<h1 id="installation--update">Installation / Update</h1>
-<h3>Choose installation type:</h3>
+- **🚫 Advanced Ad-Blocking:** Powered by BlockTheSpot's proven DLL injection for Spotify.
+- **🎥 YouTube Music Integration:** Native support for the best unofficial YTM client with ad-blocking and SponsorBlock.
+- **🔄 Smart Updates:** Automatically verifies compatibility with the latest Spotify versions.
+- **🌍 Global Access:** Built-in proxy support for restricted environments (Windows).
+- **🎨 Visual Mastery:** Seamlessly integrates with Spicetify for unlimited Spotify themes.
+- **🧹 System Integrity:** Auto-cleanup logic keeps your workspace lean and mean.
+
+---
+
+<h2 id="features">🔥 Features</h2>
+
+- **✅ Zero Ads:** Blocks banner, video, and audio ads in both Spotify and YouTube Music.
+- **🏠 Clean UI:** Hide podcasts, episodes, and distracting sections from your home screen.
+- **⏹️ Update Control:** Take command of when (and if) your clients update.
+- **📀 Enhanced YTM:** Built-in downloader (MP3/Opus) and Discord Rich Presence.
+- **⚡ Performance:** Lightweight patching methods designed for power users.
+
+---
+
+<h2 id="installation--update">💻 Installation / Update (Spotify)</h2>
+
+<h3>Choose your flavor:</h3>
+
 <details>
-<summary><small>Usual installation (New theme)</small></summary><p>
+<summary><b>🎨 Usual Installation (Modern Theme)</b></summary>
+<br>
+Features the latest theme with revamped sidebars and full experimental features.
+<br><br>
 
-  #### During installation, you need to confirm some actions, also contains:
-
-  - New theme activated (new right and left sidebar, some cover change)
-  - All bundled experimental features included
-
-  <h4> </h4>
-
-#### Just download and run [Install_New_theme.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Install_New_theme.bat)
-
-or
-
-#### Run the following command in PowerShell:
-
+**Windows (PowerShell):**
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -new_theme"
 ```
 
+**Direct Download:** [Install_New_theme.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Install_New_theme.bat)
 </details>
 
-
 <details>
-<summary><small>Usual installation (Old theme)</small></summary><p>
+<summary><b>📜 Usual Installation (Classic Theme)</b></summary>
+<br>
+Forced installation of v1.2.13 to preserve the classic Spotify UI.
+<br><br>
 
-  #### During installation, you need to confirm some actions, also contains:
-  - Forced installation of version 1.2.13 (since the old theme was removed in subsequent versions)
-  - Old theme activated
-  - Automatic blocking of Spotify updates
-  - All bundled experimental features included
-
-  <h4> </h4>
-
-#### Just download and run [Install_Old_theme.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Install_Old_theme.bat)
-
-or
-
-#### Run the following command in PowerShell:
-
+**Windows (PowerShell):**
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -v 1.2.13.661.ga588f749 -confirm_spoti_recomended_over -block_update_on"
 ```
 
+**Direct Download:** [Install_Old_theme.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Install_Old_theme.bat)
 </details>
 
 <details>
-<summary><small>Full installation</small></summary><p>
+<summary><b>🚀 Full Automatic Installation</b></summary>
+<br>
+Zero-confirmation install. Removes MS Store version, applies all patches, and launches the client.
+<br><br>
 
-  <h4>Full installation without confirmation, what does it do?</h4>
-
-  - New theme activated (new right and left sidebar, some cover change)
-  - Hiding podcasts/episodes/audiobooks from the homepage
-  - Activated static theme <kbd>spotify</kbd> for lyrics
-  - Hiding ad-like sections
-  - All bundled experimental features included
-  - Removal of Spotify MS if it was found
-  - Installation of the recommended version of Spotify (if another client has already been found, it will be installed over)
-  - Blocking of Spotify updates
-  - After the installation is completed, the client will autorun.
-
-<h4> </h4>
-
-#### Just download and run [Install_Auto.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/scripts/Install_Auto.bat)
-
-or
-
-#### Run the following command in PowerShell:
-
+**Windows (PowerShell):**
 ```ps1
 iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"
 ```
 
+**Direct Download:** [Install_Auto.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/scripts/Install_Auto.bat)
 </details>
 
-<details>
-<summary><small>Other types of installations</small></summary><p>
+<br>
 
-<details>
-<summary><small>Installation for premium</small></summary><p>
-
-  #### Usual installation only without ad blocking, for those who have a premium account, also contains:
-
-  - New theme activated (new right and left sidebar, some cover change)
-  - Disabled only audio ads in podcasts
-  - All bundled experimental features included
-
-  <h4> </h4>
-
-#### Just download and run [Install_Prem.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/scripts/Install_Prem.bat)
-
-or
-
-#### Run the following command in PowerShell:
-
-```ps1
-iex "& { $(irm 'https://raw.githubusercontent.com/NimuthuGanegoda/SpotFreedom/main/run.ps1') } -premium -new_theme"
-```
-
-</details>
-
-<details>
-<summary><small>Installing with parameters</small></summary><p>
-
-You can specify various parameters for a more flexible installation by passing switches directly to `run.ps1`
-
-</details>
-
-</details>
-
-<h1 id="installation-linux-mac">Installation on Linux & macOS</h1>
-
-#### Run the following command in terminal:
-
+### 🐧 Linux & 🍎 macOS (Spotify)
+Run the following command in your terminal:
 ```bash
 ./spotx.sh
 ```
 
-<h1 id="uninstall">Uninstall</h1>
+---
 
-- Just run [Uninstall.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Uninstall.bat)
+<h2 id="ytm-installation">📺 Installation / Update (YouTube Music)</h2>
 
-or
+To install or update the ad-free YouTube Music Desktop App on **Linux**, simply run:
 
-- Reinstall Spotify ([Full uninstall Spotify](https://github.com/amd64fox/Uninstall-Spotify) recommended)
+```bash
+./ytmusic.sh
+```
 
-<h1 id="faq">FAQ</h1>
+*This script fetches the latest [Pear Desktop](https://github.com/pear-devs/pear-desktop) (formerly th-ch) release and ensures a clean, ad-free installation.*
 
- Read the repository documentation in this README
+---
 
-<h1 id="disclaimer">Disclaimer</h1>
+<h2 id="uninstall">🗑️ Uninstalling</h2>
 
-SpotFreedom is a tool that modifies the official Spotify client, provided as an evaluation version — use it at your own risk.
+- **Windows:** Run [Uninstall.bat](https://raw.githack.com/NimuthuGanegoda/SpotFreedom/main/Uninstall.bat)
+- **General:** A full re-install of the official client is recommended for a complete reversion.
+
+---
+
+<h2 id="faq">❓ FAQ</h2>
+
+Please refer to the repository's documentation and open issues for common troubleshooting steps.
+
+---
+
+<h2 id="disclaimer">⚖️ Disclaimer</h2>
+
+SpotFreedom is a modification tool provided for educational and evaluation purposes. Use it at your own risk. This project is not affiliated with Spotify or Google.
+
+<p align="center">
+  Developed with 🖤 by <a href="https://github.com/NimuthuGanegoda">Nimuthu Ganegoda</a>
+</p>
