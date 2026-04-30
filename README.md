@@ -56,7 +56,7 @@ cargo install --locked --path spotix-gui
 ### 📺 YouTube Music (Linux)
 To install or update the ad-free YouTube Music Desktop App, run:
 ```bash
-./ytmusic.sh
+./scripts/ytmusic.sh
 ```
 
 ---
